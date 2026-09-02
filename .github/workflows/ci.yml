@@ -13,6 +13,7 @@ concurrency:
 
 jobs:
   changes:
+    if: false # disabled — re-enable when ready for CI
     runs-on: ubuntu-latest
     outputs:
       core: ${{ steps.plan.outputs.core }}

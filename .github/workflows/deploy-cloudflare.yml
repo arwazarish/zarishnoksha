@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: false # disabled — re-enable when ready for deployments
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -37,6 +37,7 @@ env:
 
 jobs:
   sync:
+    if: false # disabled — re-enable when ready for generated output sync
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
