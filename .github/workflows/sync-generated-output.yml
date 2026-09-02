@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           # Optional PAT or GitHub App token. With the default GITHUB_TOKEN,
@@ -49,7 +49,7 @@ jobs:
           token: ${{ secrets.SYNC_GENERATED_OUTPUT_TOKEN || github.token }}
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
 
