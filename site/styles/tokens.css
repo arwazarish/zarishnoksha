@@ -1,0 +1,133 @@
+/*
+ * ZarishNoksha — design tokens + minimal reset
+ *
+ * Shared by every page on the site (landing + generated sub-pages).
+ * Keep this file small and dependency-free.
+ */
+
+/* ============================================
+   MINIMAL CSS RESET
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* ============================================
+   DESIGN TOKENS
+   ============================================ */
+
+:root {
+  /* Typography — kinpaku is the default. The legacy token names now point at
+     the --ks-* faces (defined in kinpaku-tokens.css, loaded globally via
+     Base.astro) so any rule still reading --font-* renders in the brand
+     faces. The old Cormorant/Instrument/Space Grotesk trio is retired. */
+  --font-display: var(--ks-font-display);
+  --font-body: var(--ks-font);
+  --font-mono: var(--ks-mono);
+
+  /* Spacing Scale */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  --spacing-2xl: 80px;
+  --spacing-3xl: 120px;
+
+  /* Width */
+  --width-max: 1400px;
+  --width-content: 900px;
+
+  /* Animation */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 0.15s;
+  --duration-base: 0.3s;
+  --duration-slow: 0.6s;
+  --duration-slower: 0.8s;
+  --duration-slowest: 1.2s;
+
+  /* Core colors — kinpaku is the default surface. The legacy token names now
+     carry dark-lacquer values (mirroring the per-page kinpaku remaps), so any
+     rule still reading --color-* renders on the kinpaku surface. Surfaces are
+     literal oklch; ink/text/accent point at the --ks-* brand tokens. */
+  --color-ink: var(--ks-champagne);
+  --color-text: var(--ks-text);
+  --color-paper: oklch(7% 0.006 95);
+  --color-cream: oklch(9% 0.006 95);
+  --color-charcoal: var(--ks-text-muted);
+  --color-ash: var(--ks-text-faint);
+  --color-mist: var(--ks-rule);
+  --color-bg: oklch(11% 0.006 95);
+
+  /* Accent — kinpaku gold (was magenta). */
+  --color-accent: var(--ks-kinpaku);
+  --color-accent-hover: var(--ks-kinpaku-pale);
+  --color-accent-dim: oklch(78% 0.12 82 / 0.18);
+  --color-accent-soft: oklch(78% 0.12 82 / 0.32);
+
+  /* Framework category colors - Light mode */
+  --cat-create-bg: #fdf2f8;
+  --cat-create-border: #ec4899;
+  --cat-create-text: #be185d;
+
+  --cat-evaluate-bg: #fdf4ff;
+  --cat-evaluate-border: #d946ef;
+  --cat-evaluate-text: #a21caf;
+
+  --cat-refine-bg: #eff6ff;
+  --cat-refine-border: #3b82f6;
+  --cat-refine-text: #1d4ed8;
+
+  --cat-simplify-bg: #fffbeb;
+  --cat-simplify-border: #f59e0b;
+  --cat-simplify-text: #b45309;
+
+  --cat-harden-bg: #f0fdf4;
+  --cat-harden-border: #22c55e;
+  --cat-harden-text: #15803d;
+
+  --cat-system-bg: #f5f5f4;
+  --cat-system-border: #78716c;
+  --cat-system-text: #44403c;
+}
+
+/* Light mode legacy aliases — mirror html.light --ks-* tokens. */
+html.light {
+  --color-ink: var(--ks-champagne);
+  --color-text: var(--ks-text);
+  --color-paper: var(--ks-lacquer);
+  --color-cream: var(--ks-lacquer-raised);
+  --color-charcoal: var(--ks-text);
+  --color-ash: var(--ks-text-muted);
+  --color-mist: var(--ks-rule);
+  --color-bg: var(--ks-lacquer-raised);
+  --color-accent: var(--ks-kinpaku);
+  --color-accent-hover: var(--ks-kinpaku-pale);
+  --color-accent-dim: oklch(77% 0.13 82 / 0.14);
+  --color-accent-soft: oklch(77% 0.13 82 / 0.24);
+}

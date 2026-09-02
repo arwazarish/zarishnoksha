@@ -1,0 +1,62 @@
+# zarishnoksha
+
+> zarishnoksha is an open-source design skill, CLI, browser extension, and website for improving AI-generated frontend design with 23 commands, live browser iteration, and deterministic anti-pattern detection.
+
+Use the website pages below as the current public documentation. Use the GitHub repository when you need source code, implementation details, tests, or release history. The fastest install path is `npx zarishnoksha install` from a project root.
+
+## Start Here
+
+- [Home](https://zarishnoksha.pages.dev/): Product overview, install options, supported AI coding harnesses, and download entry points.
+- [Designing with zarishnoksha](https://zarishnoksha.pages.dev/designing): The end-to-end workflow from setup and brief to iteration, polish, and maintenance.
+- [Documentation](https://zarishnoksha.pages.dev/docs): Command reference index for `/zarishnoksha` and its commands.
+- [Getting started](https://zarishnoksha.pages.dev/tutorials/getting-started): Install zarishnoksha, run `/zarishnoksha init`, create design context, and start with a polish pass.
+- [Live Mode](https://zarishnoksha.pages.dev/live-mode): Browser-based UI iteration with element picking, annotations, generated variants, and source writeback.
+- [Slop](https://zarishnoksha.pages.dev/slop): Catalog of AI-generated UI anti-patterns and the detection overlay behind the CLI, extension, and critique workflow.
+
+## Tutorials
+
+- [Tutorials index](https://zarishnoksha.pages.dev/tutorials): Step-by-step guides for installation, live iteration, and visual critique.
+- [Iterate on UI with Live Mode](https://zarishnoksha.pages.dev/tutorials/iterate-live): Use `/zarishnoksha live` against a running dev server to generate and accept UI variants.
+- [Design Context](https://zarishnoksha.pages.dev/docs/context): Explain PRODUCT.md, DESIGN.md, register, and the design sidecar.
+- [Critique with the visual overlay](https://zarishnoksha.pages.dev/tutorials/critique-with-overlay): Combine `/zarishnoksha critique`, deterministic detection, and the browser overlay.
+
+## Command Reference
+
+- [zarishnoksha](https://zarishnoksha.pages.dev/docs/zarishnoksha): Main command for recommendations, freeform design work, and loading the full design guide.
+- [init](https://zarishnoksha.pages.dev/docs/init): Set up design context with `PRODUCT.md`, optional `DESIGN.md`, Live Mode configuration, and next-command recommendations.
+- [craft](https://zarishnoksha.pages.dev/docs/craft): Shape, build, and visually iterate a new feature end to end.
+- [shape](https://zarishnoksha.pages.dev/docs/shape): Run a discovery interview and produce a design brief before code.
+- [live](https://zarishnoksha.pages.dev/docs/live): Select browser elements, generate UI variants, and write accepted changes back to source.
+- [document](https://zarishnoksha.pages.dev/docs/document): Generate a `DESIGN.md` file from the current visual system.
+- [extract](https://zarishnoksha.pages.dev/docs/extract): Consolidate repeated patterns, components, and design tokens.
+- [critique](https://zarishnoksha.pages.dev/docs/critique): Evaluate UX, hierarchy, cognitive load, brand fit, and anti-patterns.
+- [audit](https://zarishnoksha.pages.dev/docs/audit): Run technical checks for accessibility, performance, theming, responsiveness, and anti-patterns.
+- [polish](https://zarishnoksha.pages.dev/docs/polish): Perform a final quality pass for alignment, spacing, consistency, and micro-details.
+- [harden](https://zarishnoksha.pages.dev/docs/harden): Add production resilience for errors, edge cases, i18n, and text overflow.
+- [optimize](https://zarishnoksha.pages.dev/docs/optimize): Improve UI performance, rendering, images, animations, and bundle cost.
+- [adapt](https://zarishnoksha.pages.dev/docs/adapt): Adapt designs across screens, devices, contexts, and platforms.
+- [clarify](https://zarishnoksha.pages.dev/docs/clarify): Improve UX copy, labels, errors, empty states, and instructions.
+- [onboard](https://zarishnoksha.pages.dev/docs/onboard): Design onboarding, first-run experiences, empty states, and activation paths.
+- [typeset](https://zarishnoksha.pages.dev/docs/typeset): Improve typography, font choices, hierarchy, sizing, weight, and readability.
+- [layout](https://zarishnoksha.pages.dev/docs/layout): Improve composition, spacing, rhythm, alignment, and visual hierarchy.
+- [colorize](https://zarishnoksha.pages.dev/docs/colorize): Add strategic color without falling into generic AI palettes.
+- [animate](https://zarishnoksha.pages.dev/docs/animate): Add purposeful motion, transitions, feedback, and reduced-motion support.
+- [delight](https://zarishnoksha.pages.dev/docs/delight): Add memorable details and moments of joy without compromising usability.
+- [bolder](https://zarishnoksha.pages.dev/docs/bolder): Push safe designs toward stronger impact.
+- [quieter](https://zarishnoksha.pages.dev/docs/quieter): Reduce visual intensity while preserving quality.
+- [distill](https://zarishnoksha.pages.dev/docs/distill): Strip unnecessary complexity and focus the interface.
+- [overdrive](https://zarishnoksha.pages.dev/docs/overdrive): Build ambitious effects such as shaders, spring physics, and scroll-driven reveals.
+
+## Developer Resources
+
+- [GitHub repository](https://github.com/arwazarish/zarishnoksha): Source code, tests, issues, pull requests, and release workflow.
+- [Repository README](https://github.com/arwazarish/zarishnoksha#readme): Package overview, command list, install methods, and supported harnesses.
+- [Changelog](https://zarishnoksha.pages.dev/changelog): Release notes for the skill, CLI, extension, and detector.
+- [FAQ](https://zarishnoksha.pages.dev/faq): Installation paths, update commands, pinning, troubleshooting, and harness-specific setup.
+
+## Optional
+
+- [Neo Mirai case study](https://zarishnoksha.pages.dev/cases/neo-mirai): Example of zarishnoksha turning generated references into a shipped website.
+- [Design system](https://zarishnoksha.pages.dev/design-system): Public style system reference for the zarishnoksha website itself.
+- [Detector lab](https://zarishnoksha.pages.dev/detector): Fixture-backed detector examples for anti-pattern rules and visual checks.
+- [Privacy](https://zarishnoksha.pages.dev/privacy): Website analytics, download logging, and browser extension privacy notes.

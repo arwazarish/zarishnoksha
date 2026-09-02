@@ -1,0 +1,15 @@
+{
+  "name": "zarishnoksha",
+  "description": "Design fluency for frontend development. Give your agent a designer's vocabulary: 1 skill with 23 commands (/zarishnoksha polish, /zarishnoksha audit, /zarishnoksha critique, etc.) and curated anti-pattern detection.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Arwa Zarish ISLAM",
+    "email": "zarishsphere@gmail.com"
+  },
+  "homepage": "https://zarishnoksha.pages.dev",
+  "repository": "https://github.com/arwazarish/zarishnoksha",
+  "skills": "./skills/",
+  "agents": [
+    "./agents/zarishnoksha-manual-edit-applier.md"
+  ]
+}

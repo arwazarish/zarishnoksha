@@ -1,0 +1,132 @@
+---
+import DocsSidebar from "../components/DocsSidebar.astro";
+import Base from "./Base.astro";
+import "../styles/sub-pages.css";
+import "../styles/docs-kinpaku.css";
+import { COMMAND_RELATIONSHIPS } from "../data/sub-pages-data";
+import { getCommandDemo } from "../scripts/demos/commands/index.js";
+
+interface Props {
+  title: string;
+  description: string;
+  tagline: string;
+  slug: string;
+  category: string;
+  pageKind?: "command" | "reference";
+  allCommands: { slug: string; category: string }[];
+}
+
+const { title, description, tagline, slug, pageKind = "command" } = Astro.props;
+const isReference = pageKind === "reference";
+
+// Decide hero layout at build time: when a command has a registered demo
+// (in site/scripts/demos/commands/<id>.js), the hero is a two-column grid
+// with the demo on the left and h1/lede on the right: same editorial
+// before/after side-by-side that the old site used. When no demo exists,
+// the hero stays single-column.
+const hasDemo = !isReference && !!getCommandDemo(slug);
+
+const relationships = COMMAND_RELATIONSHIPS[slug] || {};
+---
+
+<Base
+  title={`${title} | ZarishNoksha`}
+  description={description}
+  activeNav="docs"
+  canonicalPath={`/docs/${slug}`}
+  bodyClass="sub-page skills-layout-page docs-kinpaku kinpaku-chrome"
+>
+  <div class="skills-layout">
+    <DocsSidebar activeCommand={isReference ? undefined : slug} activeReference={isReference ? slug : undefined} />
+
+    <div class="skills-main">
+      <div class="skills-detail">
+        {hasDemo ? (
+          /* Two-column editorial hero: h1 + lede on the left, demo on
+             the right. The demo content is populated client-side by the
+             script below from site/scripts/demos/commands/<id>.js, same
+             source the homepage uses. */
+          <div class="docs-hero docs-hero--with-demo">
+            <header class="sub-page-header">
+              <h1 class="sub-page-title">{slug}</h1>
+              {tagline && <p class="sub-page-lede">{tagline}</p>}
+            </header>
+            <div class="docs-command-demo" data-command={slug}></div>
+          </div>
+        ) : (
+          <header class="sub-page-header">
+            <h1 class="sub-page-title">{title}</h1>
+            {tagline && <p class="sub-page-lede">{tagline}</p>}
+          </header>
+        )}
+
+        <div class="skills-detail-body docs-body prose">
+          <slot />
+        </div>
+
+        {!isReference && (relationships.leadsTo || relationships.pairs || relationships.combinesWith) && (
+          <footer class="skills-relationships">
+            <h2 class="skills-relationships-title">Related commands</h2>
+            <div class="skills-relationships-list">
+              {relationships.leadsTo?.map(cmd => (
+                <a href={`/docs/${cmd}`} class="skills-relationship-chip" data-relation="leads-to">
+                  <span class="skills-relationship-label">leads to</span>
+                  <span class="skills-relationship-name">{cmd}</span>
+                </a>
+              ))}
+              {relationships.pairs && (
+                <a href={`/docs/${relationships.pairs}`} class="skills-relationship-chip" data-relation="pairs">
+                  <span class="skills-relationship-label">pairs with</span>
+                  <span class="skills-relationship-name">{relationships.pairs}</span>
+                </a>
+              )}
+              {relationships.combinesWith?.map(cmd => (
+                <a href={`/docs/${cmd}`} class="skills-relationship-chip" data-relation="combines">
+                  <span class="skills-relationship-label">combines with</span>
+                  <span class="skills-relationship-name">{cmd}</span>
+                </a>
+              ))}
+            </div>
+          </footer>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    document.addEventListener('click', (e) => {
+      const toggle = e.target.closest('.skills-sidebar-toggle');
+      if (!toggle) return;
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+    });
+  </script>
+
+  <script>
+    import { getCommandDemo } from '../scripts/demos/commands/index.js';
+    import { renderCommandDemo, initCommandDemo } from '../scripts/demo-renderer.js';
+    import { initSplitCompare } from '../scripts/effects/split-compare.js';
+
+    const slot = document.querySelector('.docs-command-demo');
+    if (slot) {
+      const command = slot.dataset.command;
+      const demo = getCommandDemo(command);
+      if (demo) {
+        slot.innerHTML = renderCommandDemo(command);
+        const split = slot.querySelector('.demo-split-comparison');
+        if (split) {
+          initSplitCompare(split, {
+            defaultPosition: 50,
+            skewAngle: 0,
+            minPosition: 10,
+            maxPosition: 90,
+          });
+        }
+        initCommandDemo(command, slot);
+      } else {
+        // No demo registered for this command; leave the layout flush.
+        slot.remove();
+      }
+    }
+  </script>
+</Base>

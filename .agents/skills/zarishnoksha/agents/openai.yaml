@@ -1,0 +1,4 @@
+interface:
+  display_name: Zarishnoksha
+  short_description: Use when the user wants to design, redesign, shape, critique, audit, polish, clarify,...
+  default_prompt: Use Zarishnoksha to redesign, critique, audit, or polish this frontend.

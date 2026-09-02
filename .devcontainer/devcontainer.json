@@ -1,0 +1,48 @@
+{
+  "name": "zarishnoksha",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/node:2": { "version": "24" },
+    "ghcr.io/devcontainers/features/bun:1": { "version": "1" },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true
+    }
+  },
+  "postCreateCommand": "bun install --frozen-lockfile && bunx puppeteer browsers install chrome && npx --yes playwright install --with-deps chromium",
+  "postStartCommand": "bun run build:browser",
+  "containerEnv": {
+    "CI": "true"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "astro-build.astro-vscode",
+        "bradlc.vscode-tailwindcss",
+        "editorconfig.editorconfig",
+        "ms-playwright.playwright"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "biomejs.biome",
+        "[javascript]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[javascriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[typescriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[json]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[css]": { "editor.defaultFormatter": "biomejs.biome" },
+        "files.associations": {
+          "*.mjs": "javascript"
+        }
+      }
+    }
+  },
+  "forwardPorts": [4321],
+  "portsAttributes": {
+    "4321": { "label": "Astro dev server", "onAutoForward": "openBrowser" }
+  },
+  "remoteUser": "vscode"
+}

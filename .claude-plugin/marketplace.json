@@ -1,0 +1,26 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "zarishnoksha",
+  "metadata": {
+    "description": "Design fluency for AI harnesses. 1 skill, 23 commands, and curated anti-patterns for ZarishNoksha frontend design."
+  },
+  "owner": {
+    "name": "Arwa Zarish ISLAM",
+    "email": "zarishsphere@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "zarishnoksha",
+      "description": "Design fluency for frontend development. Give your agent a designer's vocabulary: 1 skill with 23 commands (/zarishnoksha polish, /zarishnoksha audit, /zarishnoksha critique, etc.) and curated anti-pattern detection.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Arwa Zarish ISLAM",
+        "email": "zarishsphere@gmail.com"
+      },
+      "source": "./plugin",
+      "category": "design",
+      "homepage": "https://zarishnoksha.pages.dev",
+      "tags": ["design", "frontend", "ui", "ux", "skills", "commands"]
+    }
+  ]
+}

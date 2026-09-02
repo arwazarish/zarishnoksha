@@ -1,0 +1,136 @@
+# Dependencies
+node_modules/
+
+# npm lockfile (project uses bun.lock; npm may regenerate this as a side
+# effect of npm subprocesses, but it should not be tracked)
+package-lock.json
+
+# Generated files
+dist/
+build/
+
+# Test fixtures simulate "generated dist" trees; keep them tracked so tests
+# can copy them into tmp git repos and assert is-generated behavior.
+!tests/framework-fixtures/**/dist/
+!tests/framework-fixtures/**/dist/**
+
+# Build artifacts
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Session transcripts (AI session dumps, not for distribution)
+session-*.md
+
+# IDE (scoped shared settings are tracked; user-local files are ignored)
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# Claude Code local state
+.claude/projects/
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Cloudflare
+.wrangler/
+
+# zarishnoksha-owned project files are split: generated sidecars/config may be
+# tracked, but runtime recovery state and local assets should stay local.
+.zarishnoksha/live/server.json
+.zarishnoksha/hook.cache.json
+.zarishnoksha/live/sessions/
+.zarishnoksha/live/previews/
+.zarishnoksha/live/annotations/
+.zarishnoksha/live/cache/
+.zarishnoksha/live/manual-edit-apply-transaction.json
+.zarishnoksha/live/manual-edit-events.jsonl
+.zarishnoksha/live/manual-edit-evidence/
+.zarishnoksha/live/pending-manual-edits.json
+.zarishnoksha/live/deferred-svelte-component-accepts.json
+.zarishnoksha/history/
+.zarishnoksha/config.local.json
+.zarishnoksha/hook.pending.json
+.zarishnoksha/provider-smoke/
+src/__zarishnoksha_provider_smoke_*.html
+# Per-run critique snapshots are local artifacts. ignore.md (also under
+# this dir) carries deferrals the user may want to share, so it's
+# explicitly re-included below.
+.zarishnoksha/critique/
+!.zarishnoksha/critique/ignore.md
+
+# Legacy live mode session file + annotation screenshots
+.zarishnoksha-live.json
+.zarishnoksha-live/
+src/lib/zarishnoksha/zarishnokshaLiveRoot.svelte
+src/lib/zarishnoksha/__runtime.js
+
+# Legacy per-project live mode injection config. New installs use
+# .zarishnoksha/live/config.json in the project root instead.
+**/skills/zarishnoksha/scripts/config.json
+
+# Extension build artifacts
+extension/detector/
+
+# Legacy design context (pre-v3.1, auto-migrated to PRODUCT.md by load-context.mjs)
+.zarishnoksha.md
+# Note: PRODUCT.md and DESIGN.md are INTENTIONALLY tracked in this repo —
+# they serve as reference implementations for users installing zarishnoksha.
+# Users of zarishnoksha in their own projects can choose whether to track them.
+
+# Evals (private, commercial)
+evals/
+tests/evals-v2/
+
+# Video backlog & scripts (local working files, not for distribution)
+videos/
+
+# Talk decks & speaker materials (local working files, not for distribution)
+talks/
+
+# Generated sub-pages (legacy, now replaced by Astro content collections)
+site/public/docs/
+site/public/anti-patterns/
+site/public/tutorials/
+site/public/visual-mode/
+site/public/slop/
+
+# Build artifacts written to site/public/ so Astro copies them to build/
+site/public/_data/
+site/public/_headers
+site/public/_redirects
+site/public/_routes.json
+site/public/js/detect-antipatterns-browser.js
+site/public/js/generated/
+
+# Note: harness skill directories (.claude/skills/, .cursor/skills/, etc.)
+# are intentionally tracked. npx skills reads them from this repo at install
+# time, and they enable clean submodule use. Run `bun run build` to refresh
+# them after editing skill/.
+#
+# Codex CLI consumes `.agents/skills/`; the asset-producer subagent ships
+# nested inside that skill (agents/*.toml), auto-discovered on install.
+# The project-local hook manifest is the one tracked `.codex/` artifact.
+.codex/*
+!.codex/hooks.json
+.astro/
+
+# Local-only scratch for exploratory scripts, parked pages, and unused asset candidates.
+tmp/
+
+# Isolated ablation staging (zarishnoksha-evals copies the built staged skill here
+# per rule, removes one rule, points a worker at it). Throwaway; never committed.
+.ablate-stage/
+
+# Local scratch from iterating on the OG card (weight comparisons, intermediate
+# PNGs, the old card backup). The canonical generator is `bun run og-image`
+# (scripts/generate-og-image.js); this dir is throwaway and safe to delete.
+.og-build/

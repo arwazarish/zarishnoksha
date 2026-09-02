@@ -1,0 +1,52 @@
+---
+import { getCollection, render } from "astro:content";
+import DocsSidebar from "../../components/DocsSidebar.astro";
+import Base from "../../layouts/Base.astro";
+import "../../styles/sub-pages.css";
+import "../../styles/docs-kinpaku.css";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("tutorials");
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Base
+  title={`${entry.data.title} | ZarishNoksha`}
+  description={entry.data.description}
+  activeNav="docs"
+  canonicalPath={`/tutorials/${entry.id}`}
+  bodyClass="sub-page skills-layout-page docs-kinpaku kinpaku-chrome"
+>
+  <div class="skills-layout">
+    <DocsSidebar activeTutorial={entry.id} />
+
+    <div class="skills-main">
+      <div class="skills-detail">
+        <header class="sub-page-header">
+          <h1 class="sub-page-title">{entry.data.title}</h1>
+          {entry.data.tagline && <p class="sub-page-lede">{entry.data.tagline}</p>}
+        </header>
+
+        <div class="skills-detail-body docs-body prose">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    document.addEventListener('click', (e) => {
+      const toggle = e.target.closest('.skills-sidebar-toggle');
+      if (!toggle) return;
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+    });
+  </script>
+</Base>

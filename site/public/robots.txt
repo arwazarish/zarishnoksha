@@ -1,0 +1,6 @@
+# robots.txt for zarishnoksha.pages.dev
+
+User-agent: *
+Allow: /
+
+Sitemap: https://zarishnoksha.pages.dev/sitemap.xml

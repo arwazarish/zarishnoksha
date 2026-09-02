@@ -1,0 +1,115 @@
+{
+  "name": "zarishnoksha",
+  "version": "1.0.0",
+  "author": "Arwa Zarish ISLAM",
+  "description": "Design skills, commands, and anti-pattern detection for AI coding agents",
+  "keywords": [
+    "design",
+    "frontend",
+    "ux",
+    "skills",
+    "ai",
+    "anti-patterns",
+    "lint",
+    "accessibility",
+    "css",
+    "html",
+    "detection",
+    "ci-cd"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "https://zarishnoksha.pages.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arwazarish/zarishnoksha.git"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "type": "module",
+  "bin": {
+    "zarishnoksha": "cli/bin/cli.js"
+  },
+  "main": "./cli/engine/detect-antipatterns.mjs",
+  "exports": {
+    ".": "./cli/engine/detect-antipatterns.mjs",
+    "./browser": "./cli/engine/detect-antipatterns-browser.js"
+  },
+  "files": [
+    "cli/",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build:skills": "bun run scripts/build.js --skip-root-sync",
+    "build:skills:release": "bun run scripts/build.js",
+    "build:site": "npx astro build",
+    "build": "bun run build:skills && bun run build:site && cp -R dist build/_data/dist",
+    "build:release": "bun run build:skills:release && bun run build:site && cp -R dist build/_data/dist",
+    "build:browser": "node scripts/build-browser-detector.js",
+    "build:extension": "node scripts/build-extension.js",
+    "clean": "rm -rf dist build",
+    "rebuild": "bun run clean && bun run build",
+    "rebuild:release": "bun run clean && bun run build:release",
+    "dev": "bun run scripts/gen-dev-api.mjs && npx astro dev",
+    "preview": "bun run build && npx astro preview",
+    "deploy": "bun run build && wrangler pages deploy build/",
+    "test": "node scripts/run-tests.mjs default",
+    "test:core": "node scripts/run-tests.mjs core",
+    "test:detector": "node scripts/run-tests.mjs detector",
+    "test:framework": "node scripts/run-tests.mjs framework",
+    "test:live": "node scripts/run-tests.mjs live",
+    "test:cli-e2e": "node scripts/run-tests.mjs cli-e2e",
+    "test:cli-remote-e2e": "node scripts/run-tests.mjs cli-remote-e2e",
+    "test:live-e2e": "node scripts/run-tests.mjs live-e2e",
+    "test:live-e2e-accept-cleanup": "node scripts/run-tests.mjs live-e2e-accept-cleanup",
+    "test:live-e2e-agent": "node scripts/run-tests.mjs live-e2e-agent",
+    "test:skill-behavior": "node scripts/run-tests.mjs skill-behavior",
+    "test:live-svelte-adapter-deepseek": "node scripts/run-tests.mjs live-svelte-adapter-deepseek",
+    "smoke:hooks": "node scripts/smoke-provider-hooks.mjs",
+    "bench:detector": "node scripts/benchmark-detector.mjs",
+    "bench:detector:browser": "node scripts/benchmark-detector.mjs --browser",
+    "audit": "bun audit --audit-level=moderate",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write --unsafe .",
+    "format": "biome format --write .",
+    "prepack": "cp README.md README.repo.md && cp README.npm.md README.md",
+    "postpack": "cp README.repo.md README.md && rm README.repo.md",
+    "release:skill": "node scripts/release.mjs skill",
+    "release:cli": "node scripts/release.mjs cli",
+    "release:ext": "node scripts/release.mjs extension",
+    "screenshot": "bun run scripts/screenshot-antipatterns.js",
+    "og-image": "bun run scripts/generate-og-image.js"
+  },
+  "dependencies": {
+    "css-select": "^7.0.0",
+    "css-tree": "^3.2.1",
+    "domutils": "^4.0.2",
+    "fflate": "^0.8.3",
+    "htmlparser2": "^12.0.0",
+    "marked": "^18.0.11"
+  },
+  "optionalDependencies": {
+    "puppeteer": "^25.9.0"
+  },
+  "devDependencies": {
+    "@ai-sdk/anthropic": "^4.0.46",
+    "@ai-sdk/google": "^4.0.59",
+    "@ai-sdk/openai": "^4.0.53",
+    "@anthropic-ai/claude-agent-sdk": "^0.3.252",
+    "@anthropic-ai/sdk": "^0.122.0",
+    "@biomejs/biome": "^2.5.11",
+    "@google/genai": "^2.20.0",
+    "@paper-design/shaders": "^0.0.80",
+    "ai": "^7.0.87",
+    "archiver": "^8.0.0",
+    "astro": "^7.2.10",
+    "fontkit": "^2.0.4",
+    "modern-screenshot": "^4.7.0",
+    "motion": "^13.1.1",
+    "opentype.js": "^2.0.0",
+    "playwright": "^1.62.1",
+    "sharp": "^0.35.4",
+    "wrangler": "^4.127.1",
+    "zod": "^4.5.4"
+  }
+}

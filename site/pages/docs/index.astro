@@ -1,0 +1,313 @@
+---
+import { getCollection } from "astro:content";
+import DocsSidebar from "../../components/DocsSidebar.astro";
+import Base from "../../layouts/Base.astro";
+import "../../styles/sub-pages.css";
+import "../../styles/docs-kinpaku.css";
+import { CATEGORY_LABELS, CATEGORY_ORDER, SKILL_CATEGORIES } from "../../data/sub-pages-data";
+
+const entries = await getCollection("skills");
+const referenceEntries = (await getCollection("reference")).sort((a, b) => a.data.order - b.data.order);
+
+const tutorials = (await getCollection("tutorials")).sort((a, b) => a.data.order - b.data.order);
+
+const taglineFor = (slug: string) => entries.find((e) => e.id === slug)?.data.tagline ?? "";
+
+const grouped: Record<string, { slug: string; tagline: string }[]> = {};
+for (const cat of CATEGORY_ORDER) {
+  grouped[cat] = entries
+    .filter((e) => SKILL_CATEGORIES[e.id] === cat)
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .map((e) => ({ slug: e.id, tagline: e.data.tagline }));
+}
+
+const session = [
+  { slug: "shape", verb: "Plan" },
+  { slug: "craft", verb: "Build" },
+  { slug: "critique", verb: "Review" },
+  { slug: "polish", verb: "Refine" },
+];
+
+const startSteps = [
+  {
+    label: "Install",
+    command: "npx zarishnoksha install",
+    line: "Run from the project root, then reload your agent.",
+  },
+  {
+    label: "Set context",
+    command: "/zarishnoksha init",
+    line: "Create PRODUCT.md and DESIGN.md.",
+  },
+  {
+    label: "Try it",
+    command: "/zarishnoksha polish the pricing page",
+    line: "Point it at a real page.",
+  },
+];
+
+const choices = [
+  {
+    need: "Start a project",
+    command: "/zarishnoksha init",
+    href: "/docs/init",
+  },
+  {
+    need: "Polish a page",
+    command: "/zarishnoksha polish",
+    href: "/docs/polish",
+  },
+  {
+    need: "Find design issues",
+    command: "/zarishnoksha critique",
+    href: "/docs/critique",
+  },
+  {
+    need: "Check implementation",
+    command: "/zarishnoksha audit",
+    href: "/docs/audit",
+  },
+  {
+    need: "Iterate in the browser",
+    command: "/zarishnoksha live",
+    href: "/docs/live",
+  },
+  {
+    need: "Build a new feature",
+    command: "/zarishnoksha craft",
+    href: "/docs/craft",
+  },
+];
+
+const manualTopics = [
+  {
+    topic: "Design Context",
+    href: "/docs/context",
+    label: "PRODUCT.md + DESIGN.md",
+  },
+  {
+    topic: "Detector CLI",
+    href: "/docs/detector",
+    label: "npx zarishnoksha detect",
+  },
+  {
+    topic: "Design hooks",
+    href: "/docs/hooks",
+    label: "/zarishnoksha hooks",
+  },
+  {
+    topic: "Config and ignores",
+    href: "/docs/config",
+    label: ".zarishnoksha/config.json",
+  },
+].filter((topic) => referenceEntries.some((entry) => `/docs/${entry.id}` === topic.href));
+
+const chains: { id: string; a: string; b: string; arrow: string; line: string }[] = [
+  {
+    id: "bolder-quieter",
+    a: "bolder",
+    b: "quieter",
+    arrow: "↔",
+    line: "Two halves of voice. Loud or restrained, never neutral.",
+  },
+  { id: "audit-harden", a: "audit", b: "harden", arrow: "→", line: "Find the technical issues. Then fix them." },
+  { id: "critique-polish", a: "critique", b: "polish", arrow: "→", line: "Review the work. Then refine it." },
+  { id: "shape-craft", a: "shape", b: "craft", arrow: "→", line: "Plan the feature. Then build the plan." },
+];
+---
+
+<Base
+  title="Docs | ZarishNoksha"
+  description="Start using /zarishnoksha: install, run init, create design context, then choose the right command for the job."
+  activeNav="docs"
+  canonicalPath="/docs"
+  bodyClass="sub-page skills-layout-page docs-kinpaku kinpaku-chrome"
+>
+  <div class="skills-layout">
+    <DocsSidebar />
+
+    <div class="skills-main skills-main--docs-index">
+      <div class="docs-index">
+
+        <section class="docs-start-rail" aria-labelledby="docs-start-h">
+          <header class="docs-start-rail-head">
+            <h1 class="docs-start-rail-title" id="docs-start-h">Start with <span>/zarishnoksha</span></h1>
+            <p class="docs-start-rail-lede">Install, add context, then run one command.</p>
+          </header>
+
+          <div class="docs-start-rail-sequence">
+            <ol class="docs-start-rail-steps docs-start-rail-steps--number-gutter docs-start-rail-steps--inner-inset" aria-label="Quick start steps">
+              {startSteps.map((step, i) => (
+                <li class="docs-start-rail-step">
+                  <span class="docs-start-rail-num">{String(i + 1).padStart(2, "0")}</span>
+                  <span class="docs-start-rail-label">{step.label}</span>
+                  <code class="docs-start-rail-command">{step.command}</code>
+                  <span class="docs-start-rail-line">{step.line}</span>
+                </li>
+              ))}
+            </ol>
+
+          </div>
+
+          <p class="docs-start-rail-note">Full walkthrough: <a href="/tutorials/getting-started">Getting started</a>.</p>
+        </section>
+
+        <section class="docs-chooser-section" aria-labelledby="docs-chooser-h">
+          <header class="docs-chooser-head">
+            <h2 class="docs-chooser-title" id="docs-chooser-h">Choose a command</h2>
+          </header>
+
+          <div class="docs-chooser-list">
+            {choices.map(choice => (
+              <a class="docs-chooser-list-row" href={choice.href}>
+                <span class="docs-chooser-list-need">{choice.need}</span>
+                <span class="docs-chooser-list-command">{choice.command}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="docs-manual-section" aria-labelledby="docs-manual-h">
+          <header class="docs-manual-head">
+            <h2 class="docs-manual-title" id="docs-manual-h">Understand the system</h2>
+            <p class="docs-manual-sub">Context files, detector checks, hooks, and config.</p>
+          </header>
+
+          <div class="docs-chooser-list docs-manual-list">
+            {manualTopics.map(topic => (
+              <a class="docs-chooser-list-row" href={topic.href}>
+                <span class="docs-chooser-list-need">{topic.topic}</span>
+                <span class="docs-chooser-list-command">{topic.label}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <!-- Live mode: visual iteration -->
+        <section class="docs-live" aria-labelledby="docs-live-h">
+          <div class="docs-live-copy">
+            <h2 class="docs-live-title" id="docs-live-h">Iterate in the browser</h2>
+            <p class="docs-live-lede">Pick UI, generate variants, accept one into source.</p>
+            <p class="docs-live-cta">
+              <a class="ks-button ks-button-primary" href="/docs/live">
+                Live Mode docs
+                <span class="ks-button-arrow" aria-hidden="true">
+                  <svg viewBox="0 0 16 8" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 4h14M10 0l4 4-4 4"/></svg>
+                </span>
+              </a>
+            </p>
+          </div>
+
+          <figure class="docs-live-figure" aria-hidden="true">
+            <div class="docs-live-frame">
+              <div class="docs-live-chrome">
+                <span class="docs-live-dot"></span>
+                <span class="docs-live-dot"></span>
+                <span class="docs-live-dot"></span>
+                <span class="docs-live-url">localhost:4321</span>
+              </div>
+              <div class="docs-live-stage">
+                <div class="docs-live-target">
+                  <div class="docs-live-target-title">Hero headline</div>
+                  <div class="docs-live-target-sub">Variant 2 of 3</div>
+                </div>
+                <div class="docs-live-bar">
+                  <span class="docs-live-bar-prev">Prev</span>
+                  <span class="docs-live-bar-counter">2 / 3</span>
+                  <span class="docs-live-bar-next">Next</span>
+                  <span class="docs-live-bar-divider"></span>
+                  <span class="docs-live-bar-accept">Accept</span>
+                </div>
+              </div>
+            </div>
+          </figure>
+        </section>
+
+        <!-- A typical session: linear workflow -->
+        <section class="docs-flow-section">
+          <header class="docs-flow-head">
+            <h2 class="docs-flow-title">Full session path</h2>
+            <p class="docs-flow-sub">Plan, build, review, refine.</p>
+          </header>
+
+          <ol class="docs-flow" aria-label="Typical session">
+            {session.map((step, i) => (
+              <li class="docs-flow-step">
+                <a class="docs-flow-link" href={`/docs/${step.slug}`}>
+                  <span class="docs-flow-verb">{step.verb}</span>
+                  <span class="docs-flow-cmd">/zarishnoksha {step.slug}</span>
+                  <span class="docs-flow-tag">{taglineFor(step.slug)}</span>
+                </a>
+                {i < session.length - 1 && (
+                  <span class="docs-flow-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 8" fill="none" stroke="currentColor" stroke-width="1"><path d="M0 4h22M18 0l4 4-4 4"/></svg>
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+
+          <p class="docs-flow-alt">
+            Already shipped? Use <a href="/docs/polish">/zarishnoksha polish</a> on the page that needs work, or <a href="/docs/audit">/zarishnoksha audit</a> for checks.
+          </p>
+        </section>
+
+        <!-- Pairs and chains: the schema -->
+        <section class="docs-chains-section">
+          <header class="docs-chains-head">
+            <h2 class="docs-chains-title">Useful command pairs</h2>
+            <p class="docs-chains-sub">Use these when one pass is not enough.</p>
+          </header>
+
+          <div class="docs-chains-grid">
+            {chains.map(chain => (
+              <article class="docs-chain">
+                <p class="docs-chain-formula">
+                  <a class="docs-chain-cmd" href={`/docs/${chain.a}`}>{chain.a}</a>
+                  <span class="docs-chain-arrow" aria-hidden="true">{chain.arrow}</span>
+                  <a class="docs-chain-cmd" href={`/docs/${chain.b}`}>{chain.b}</a>
+                </p>
+                <p class="docs-chain-line">{chain.line}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <!-- Full reference: the cheatsheet -->
+        <section class="docs-reference-section" aria-labelledby="docs-reference-h">
+          <header class="docs-reference-head">
+            <h2 class="docs-reference-title" id="docs-reference-h">Full command reference</h2>
+          </header>
+
+          <div class="docs-reference">
+            {CATEGORY_ORDER.map(cat => (
+              <div class="docs-reference-group" id={`category-${cat}`}>
+                <p class="docs-reference-cat">{CATEGORY_LABELS[cat]} <span class="docs-reference-count">{grouped[cat].length}</span></p>
+                <ul class="docs-reference-list">
+                  {grouped[cat].map(entry => (
+                    <li>
+                      <a class="docs-reference-row" href={`/docs/${entry.slug}`}>
+                        <span class="docs-reference-name">{entry.slug}</span>
+                        <span class="docs-reference-line">{entry.tagline}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    document.addEventListener('click', (e) => {
+      const toggle = e.target.closest('.skills-sidebar-toggle');
+      if (!toggle) return;
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+    });
+  </script>
+</Base>

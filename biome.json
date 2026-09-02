@@ -1,0 +1,117 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.11/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!node_modules",
+      "!dist",
+      "!build",
+      "!extension/detector",
+      "!plugin",
+      "!.agents",
+      "!.claude/skills",
+      "!.cursor/skills",
+      "!.gemini/skills",
+      "!.github/skills",
+      "!.kiro/skills",
+      "!.opencode",
+      "!.pi/skills",
+      "!.qoder/skills",
+      "!.rovodev/skills",
+      "!.trae",
+      "!.trae-cn",
+      "!site/public/js/generated",
+      "!site/public/docs",
+      "!site/public/anti-patterns",
+      "!site/public/tutorials",
+      "!site/public/visual-mode",
+      "!site/public/slop",
+      "!site/public/_data",
+      "!skill/scripts/modern-screenshot.umd.js"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "arrowParentheses": "always"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "a11y": {
+        "useButtonType": "off",
+        "useHtmlLang": "off",
+        "useValidAnchor": "off",
+        "noSvgWithoutTitle": "off",
+        "noLabelWithoutControl": "off",
+        "useAriaPropsSupportedByRole": "off",
+        "noAmbiguousAnchorText": "off",
+        "noRedundantAlt": "off",
+        "useSemanticElements": "off",
+        "noNoninteractiveElementToInteractiveRole": "off"
+      },
+      "complexity": {
+        "noUselessTernary": "off",
+        "useLiteralKeys": "off",
+        "noUselessSwitchCase": "off",
+        "noUselessLoneBlockStatements": "off",
+        "noUselessStringRaw": "off",
+        "useOptionalChain": "off",
+        "noImportantStyles": "off",
+        "noCommaOperator": "off",
+        "useDateNow": "off"
+      },
+      "correctness": {
+        "useParseIntRadix": "off",
+        "noUnusedFunctionParameters": "off",
+        "noUnusedVariables": "off",
+        "noUnusedImports": "off",
+        "noUnsafeFinally": "off",
+        "useYield": "off"
+      },
+      "style": {
+        "useTemplate": "off",
+        "noDescendingSpecificity": "off",
+        "noNonNullAssertion": "off",
+        "useNodejsImportProtocol": "off"
+      },
+      "suspicious": {
+        "noGlobalIsNan": "off",
+        "noTemplateCurlyInString": "off",
+        "noEmptyBlock": "off",
+        "noGlobalIsFinite": "off",
+        "noAssignInExpressions": "off",
+        "noMisleadingCharacterClass": "off",
+        "useIterableCallbackReturn": "off",
+        "noDuplicateProperties": "off",
+        "noDuplicateObjectKeys": "off",
+        "noDoubleEquals": "off",
+        "noRedeclare": "off",
+        "noControlCharactersInRegex": "off",
+        "noUnknownAtRules": "off"
+      }
+    }
+  }
+}

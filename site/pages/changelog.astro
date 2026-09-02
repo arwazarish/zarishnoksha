@@ -1,0 +1,32 @@
+---
+import Base from "../layouts/Base.astro";
+import "../styles/sub-pages.css";
+import "../styles/changelog-faq-kinpaku.css";
+---
+
+<Base
+  title="Changelog | ZarishNoksha"
+  description="What changed across ZarishNoksha releases: skill, CLI, extension, and detector. Per-version notes plus recent highlights."
+  activeNav="docs"
+  canonicalPath="/changelog"
+  bodyClass="sub-page kinpaku-chrome kinpaku-surface"
+>
+  <div class="cf-page">
+    <p class="cf-eyebrow">Release notes</p>
+    <h1 class="cf-title">Changelog</h1>
+    <p class="cf-lede">What shipped, when, and why. The whole suite (skill, CLI, and extension) is releasing together as v1.0.0.</p>
+
+    <article id="v1.0.0" class="cf-entry cf-entry--current">
+      <header class="cf-entry-head"><span class="cf-version">v1.0.0</span><span class="cf-date">September 2, 2026</span><span class="cf-current-badge">Current</span></header>
+      <p class="cf-entry-lead">The first release of ZarishNoksha: a design skill with 23 commands, a CLI, and a browser extension built around one idea. Give your agent a designer&rsquo;s vocabulary, then catch the anti-patterns it still ships.</p>
+      <ul class="cf-items">
+        <li><strong>One skill, 23 commands.</strong> Install the skill and every design job has a command: <code>/zarishnoksha polish</code>, <code>/zarishnoksha audit</code>, <code>/zarishnoksha critique</code>, <code>/zarishnoksha document</code>, <code>/zarishnoksha live</code>, and the rest. Runs in Claude Code, Cursor, Codex, Gemini CLI, and other harnesses, with project context from <code>PRODUCT.md</code> and <code>DESIGN.md</code>.</li>
+        <li><strong>A 44-rule anti-pattern detector.</strong> One canonical engine (typography, color, layout, motion, and AI-slop tells from <code>cream-palette</code> to <code>em-dash-overuse</code>) feeds the CLI, the browser extension, and the critique command so every surface agrees on what counts as a defect.</li>
+        <li><strong>CLI.</strong> <code>npx zarishnoksha install</code> sets up a project for the harnesses you use, <code>npx zarishnoksha detect</code> scans HTML, CSS, JSX, Vue, and Svelte, and <code>update</code> / <code>check</code> keep installed skills current.</li>
+        <li><strong>Browser extension.</strong> Scan any page from the toolbar or a DevTools panel, flip per-rule toggles, and see flagged elements highlighted in place. Works in Chrome and Firefox.</li>
+        <li><strong>Live Mode.</strong> <code>/zarishnoksha live</code> iterates on your UI in the browser: pick an element, steer it in plain language, get variants swapped in via your framework&rsquo;s HMR, and accept the winner straight back to source.</li>
+        <li><strong>A new identity.</strong> The name fuses zarish and নকশা (noksha, the Bengali word for design), and a fresh ZN monogram now runs across the site, the skill, and the extension.</li>
+      </ul>
+    </article>
+  </div>
+</Base>

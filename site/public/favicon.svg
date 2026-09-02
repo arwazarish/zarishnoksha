@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    /* Light OS theme: black mark. Dark OS theme: pristine kinpaku gold,
+       matching the header logo (--ks-kinpaku, #ffb900). The ZN monogram is
+       drawn on a 24x24 grid and centered in the 32x32 favicon box. */
+    path { fill: #141207; }
+    @media (prefers-color-scheme: dark) {
+      path { fill: #ffb900; }
+    }
+  </style>
+  <g transform="translate(4 4)">
+    <path d="M2 2.5h8.5v3H2zM10.5 6.8v3l-8 10.7v-3zM2 18.5h8.5v3H2z"/>
+    <path d="M13.5 2.5h3v19h-3zM19 2.5h3v19h-3zM16 2.5l3.5 17l-2.25.47l-3.5-17z"/>
+  </g>
+</svg>

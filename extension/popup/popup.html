@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <span class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M2 2.5h8.5v3H2zM10.5 6.8v3l-8 10.7v-3zM2 18.5h8.5v3H2z"/>
+        <path d="M13.5 2.5h3v19h-3zM19 2.5h3v19h-3zM16 2.5l3.5 17l-2.25.47l-3.5-17z"/>
+      </svg>
+    </span>
+    <h1>ZarishNoksha</h1>
+  </header>
+
+  <div class="count-display" id="count-display">
+    <span class="count-number" id="count-number">0</span>
+    <span class="count-label" id="count-label">anti-patterns</span>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-primary" id="btn-scan">Scan page</button>
+    <button class="btn btn-secondary" id="btn-toggle">Hide overlays</button>
+  </div>
+
+  <p class="scan-error" id="scan-error" hidden></p>
+
+  <footer>
+    <a href="https://zarishnoksha.pages.dev" id="link-site">zarishnoksha.pages.dev</a>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

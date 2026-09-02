@@ -1,0 +1,853 @@
+---
+import LiveDemoGbar from "../components/LiveDemoGbar.astro";
+import LiveDemoPalette from "../components/LiveDemoPalette.astro";
+import Testimonials from "../components/Testimonials.astro";
+import Base from "../layouts/Base.astro";
+import "../styles/main.css";
+import "../styles/sub-pages.css";
+import "../styles/home-kinpaku.css";
+import "../styles/home-rebuild.css";
+import "../styles/testimonials.css";
+
+// Hero background candidates: pulled from /design-system's candidate folders
+// so the homepage switcher and the design-system gallery stay in sync. The
+// switcher panel below the hero lets you cycle through them and pick one;
+// selection persists in localStorage. Remove the switcher block + this loader
+// once the hero is locked in.
+// Hero is /assets/neo-kinpaku/candidates/finalists/m-01-v2-01.png (referenced from CSS).
+// Previous hero: /assets/neo-kinpaku/kintsugi-hero-v3.png
+---
+
+<Base
+  title="ZarishNoksha: Give your agent a designer's vocabulary"
+  description="One skill, 23 design commands, and a 44-rule anti-pattern detector for AI frontend. Works with Cursor, Claude Code, GitHub Copilot, Gemini CLI, and Codex CLI."
+  activeNav="home"
+  canonicalPath="/"
+  bodyClass="home-kinpaku kinpaku-chrome"
+  mainId="main-content"
+  mainClass="site-content"
+  ogTitle="ZarishNoksha: Give your agent a designer's vocabulary"
+  ogDescription="One skill, 23 design commands, and a 44-rule anti-pattern detector for AI frontend. Works with Cursor, Claude Code, GitHub Copilot, Gemini CLI, and Codex CLI."
+  ogImage="https://zarishnoksha.pages.dev/og-image-v2.jpg"
+  twitterSite="@arwazarish"
+  twitterCreator="@arwazarish"
+>
+
+<Fragment slot="head">
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-TEXGHC7V34"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TEXGHC7V34');
+  </script>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#070604">
+</Fragment>
+
+<Fragment slot="before-header">
+  <div class="grain-overlay" aria-hidden="true"></div>
+</Fragment>
+
+<Fragment slot="after-header">
+  <!-- 1. HERO -->
+  <section id="hero" class="hero-rebuild">
+    <div class="hero-rebuild-art" aria-hidden="true"></div>
+    <div class="hero-rebuild-container">
+      <div class="hero-rebuild-left">
+        <h1 class="hero-rebuild-title">The missing design<br>vocabulary for agents.</h1>
+
+        <p class="hero-rebuild-body">
+          It's why AI frontends all share one look: no words for hierarchy, contrast, or restraint.
+          ZarishNoksha: zarish, and নকশা (<em>noksha</em>), Bengali for design, gives your agent
+          the designer's vocabulary, and gives you the same commands, so you both stop guessing
+          and start directing, live, in your production codebase.
+        </p>
+
+        <div class="hero-rebuild-actions">
+          <a href="#downloads" class="ks-button ks-button-primary">
+            Get started
+            <span class="ks-button-arrow" aria-hidden="true">
+              <svg viewBox="0 0 16 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square">
+                <path d="M0 4h14M10 0l4 4-4 4"/>
+              </svg>
+            </span>
+          </a>
+          <a href="/designing" class="ks-button ks-button-ghost">How it works</a>
+        </div>
+
+        <div class="hero-rebuild-logos" aria-label="AI coding harnesses ZarishNoksha works with">
+          <span class="hero-rebuild-logo has-tooltip" data-tooltip="Codex CLI"><img src="assets/openai-logo.png" alt="Codex CLI" width="20" height="20" loading="lazy"></span>
+          <span class="hero-rebuild-logo has-tooltip" data-tooltip="Claude Code"><img src="assets/claude-logo.png" alt="Claude Code" width="22" height="22" loading="lazy"></span>
+          <span class="hero-rebuild-logo has-tooltip" data-tooltip="GitHub Copilot"><img src="assets/github-copilot-logo.svg" alt="GitHub Copilot" width="20" height="20" loading="lazy"></span>
+          <span class="hero-rebuild-logo has-tooltip" data-tooltip="Cursor"><img src="assets/cursor-logo.png" alt="Cursor" width="22" height="22" loading="lazy"></span>
+          <span class="hero-rebuild-logo has-tooltip" data-tooltip="Gemini CLI"><img src="assets/gemini-logo.png" alt="Gemini CLI" width="20" height="20" loading="lazy"></span>
+          <span class="hero-rebuild-logo has-tooltip" data-tooltip="Antigravity"><img src="assets/antigravity-logo.png" alt="Antigravity" width="20" height="20" loading="lazy"></span>
+          <span class="hero-rebuild-logo has-tooltip" data-tooltip="OpenCode"><img src="assets/opencode-logo.png" alt="OpenCode" width="20" height="20" loading="lazy"></span>
+          <span class="hero-rebuild-logo has-tooltip" data-tooltip="Pi"><img src="assets/pi-logo.svg" alt="Pi" width="20" height="20" loading="lazy"></span>
+        </div>
+      </div>
+
+      <div class="hero-rebuild-right">
+        <!-- Live Mode loop: starts on the AI-slop card, picks it, and cycles
+             three refined variants. Driven by live-demo.js (#live-demo). -->
+        <div class="live-demo hero-live-demo" id="live-demo" aria-label="Live Mode interactive demo loop">
+          <div class="live-demo-frame-col"><div class="live-demo-frame">
+            <div class="live-demo-chrome">
+              <span class="live-demo-dot"></span>
+              <span class="live-demo-dot"></span>
+              <span class="live-demo-dot"></span>
+              <span class="live-demo-url">localhost:3000</span>
+            </div>
+
+            <div class="live-demo-stage">
+              <!-- The page under the picker: a warm, serif boutique-hotel site
+                   (deliberately the opposite of zarishnoksha's dark look). -->
+              <div class="hotel-site" aria-hidden="true">
+                <header class="hotel-nav">
+                  <span class="hotel-logo">AURELIA</span>
+                  <nav class="hotel-nav-links"><span>Suites</span><span>Dining</span><span>Spa</span><span>Journal</span></nav>
+                  <span class="hotel-nav-book">Book</span>
+                </header>
+                <!-- The picked element: the hero. Your AI generated it generic;
+                     pick it, comment, and the variants make it exclusive + on-brand. -->
+                <div class="live-demo-target hotel-hero-pick" data-demo-target>
+                  <div class="live-demo-variant is-active" data-variant="original">
+                    <div class="hotel-hero hotel-hero--slop">
+                      <div class="hotel-hero-inner">
+                        <h2 class="hotel-hero-title">Welcome to Our Hotel</h2>
+                        <p class="hotel-hero-sub">Book the best rooms at the best prices.</p>
+                        <button type="button" class="hotel-hero-cta">Book Now</button>
+                      </div>
+                    </div>
+                  </div>
+                  {['1', '2', '3'].map((n) => (
+                    <div class="live-demo-variant" data-variant={n}>
+                      <div class={`hotel-hero hotel-hero--${n}`}>
+                        <div class="hotel-hero-photo"></div>
+                        <div class="hotel-hero-inner">
+                          <p class="hotel-hero-eyebrow">Amalfi Coast</p>
+                          <h2 class="hotel-hero-title">Where the coast forgets time</h2>
+                          <p class="hotel-hero-sub">Forty suites above the sea.</p>
+                          <button type="button" class="hotel-hero-cta">Reserve your stay</button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <!-- Context: the rest of the page, scrolled just into view -->
+                <div class="hotel-suites">
+                  <p class="hotel-suites-label">Our Suites</p>
+                  <div class="hotel-suites-row">
+                    <article class="hotel-card">
+                      <div class="hotel-card-photo"></div>
+                      <div class="hotel-card-body">
+                        <p class="hotel-card-kicker">Suite</p>
+                        <h3 class="hotel-card-name">Garden Suite</h3>
+                        <p class="hotel-card-meta">Sea view · 48m²</p>
+                        <div class="hotel-card-foot">
+                          <span class="hotel-card-price">$420<i>/night</i></span>
+                          <button type="button" class="hotel-card-btn">Reserve</button>
+                        </div>
+                      </div>
+                    </article>
+                    <article class="hotel-card">
+                      <div class="hotel-card-photo hotel-card-photo--b"></div>
+                      <div class="hotel-card-body">
+                        <p class="hotel-card-kicker">Suite</p>
+                        <h3 class="hotel-card-name">Sea Loft</h3>
+                        <p class="hotel-card-meta">Terrace · 62m²</p>
+                        <div class="hotel-card-foot">
+                          <span class="hotel-card-price">$510<i>/night</i></span>
+                          <button type="button" class="hotel-card-btn">Reserve</button>
+                        </div>
+                      </div>
+                    </article>
+                    <article class="hotel-card">
+                      <div class="hotel-card-photo hotel-card-photo--c"></div>
+                      <div class="hotel-card-body">
+                        <p class="hotel-card-kicker">Suite</p>
+                        <h3 class="hotel-card-name">Cliff Suite</h3>
+                        <p class="hotel-card-meta">Sea view · 70m²</p>
+                        <div class="hotel-card-foot">
+                          <span class="hotel-card-price">$680<i>/night</i></span>
+                          <button type="button" class="hotel-card-btn">Reserve</button>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </div>
+
+              <div class="live-demo-outline" data-demo-outline aria-hidden="true"></div>
+
+              <!-- Annotation layer: one freehand circle around the off-brand
+                   purple button + a comment pin with the intent. Mirrors the real
+                   picker; both are "sent along". -->
+              <div class="live-demo-annotations" data-demo-annotations aria-hidden="true">
+                <svg class="live-demo-stroke" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M5 73 C1 61 15 55 27 57 C36 59 37 71 27 74 C16 78 5 76 3 65" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>
+                </svg>
+                <span class="live-demo-pin" data-demo-pin>
+                  <span class="live-demo-pin-dot"></span>
+                  <span class="live-demo-pin-note"><span data-demo-note-text></span><span class="live-demo-pin-caret"></span></span>
+                </span>
+                <span class="live-demo-annot-clear">Clear</span>
+              </div>
+
+              <div class="live-demo-ctx" data-demo-ctx data-phase="hidden">
+                <div class="live-demo-ctx-row live-demo-ctx-row--configure">
+                  <div class="live-demo-ctx-command">
+                    <span class="live-demo-ctx-input" data-demo-input>
+                      <button type="button" class="live-demo-ctx-selection">h1</button>
+                      <span data-demo-input-text></span><span class="live-demo-ctx-caret"></span>
+                    </span>
+                  </div>
+                  <div class="live-demo-ctx-trailing">
+                    <div class="live-demo-ctx-modifiers">
+                      <button type="button" class="live-demo-ctx-action" data-demo-ctx-pill>
+                        <span data-demo-cmd-name>adapt</span>
+                        <span class="live-demo-ctx-action-caret" aria-hidden="true">▾</span>
+                      </button>
+                      <button type="button" class="live-demo-ctx-count">×3</button>
+                    </div>
+                    <div class="live-demo-ctx-actions">
+                    <button type="button" class="live-demo-ctx-voice" aria-label="Voice input">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
+                    </button>
+                    <button type="button" class="live-demo-ctx-go" data-demo-go aria-label="Generate variants">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </button>
+                    </div>
+                  </div>
+                </div>
+                <LiveDemoPalette pick="colorize" />
+                <div class="live-demo-ctx-row live-demo-ctx-row--generating">
+                  <span class="live-demo-ctx-spinner" aria-hidden="true"></span>
+                  <span>Generating variants…</span>
+                </div>
+                <div class="live-demo-ctx-row live-demo-ctx-row--cycling">
+                  <button type="button" class="live-demo-ctx-nav" aria-label="Previous variant">‹</button>
+                  <span class="live-demo-ctx-counter" data-demo-counter>1 / 3</span>
+                  <button type="button" class="live-demo-ctx-nav" aria-label="Next variant">›</button>
+                  <span class="live-demo-ctx-divider"></span>
+                  <button type="button" class="live-demo-ctx-discard" aria-label="Discard">✕</button>
+                  <button type="button" class="live-demo-ctx-accept" data-demo-accept>Accept</button>
+                </div>
+                <div class="live-demo-ctx-row live-demo-ctx-row--accepted">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Variant 3 written to source</span>
+                </div>
+              </div>
+
+              <div class="live-demo-cursor" data-demo-cursor aria-hidden="true">
+                <svg width="18" height="22" viewBox="0 0 18 22" fill="none">
+                  <path d="M1 1 L1 17 L5 13 L8 20 L11 19 L7.5 12 L13 12 Z" fill="#111" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+
+            <LiveDemoGbar />
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Fragment>
+
+    <!-- 01b. TESTIMONIALS: five-variant section, switcher in the bottom-right
+         floating panel. Sits between the hero and the slop teaser. The dot-grid
+         divider that used to open the slop section now opens this one. -->
+    <Testimonials />
+
+
+    <!-- 02. CATCH THE SLOP - Anti-pattern detector teaser -->
+    <section class="slop-teaser-section" id="slop" aria-labelledby="slop-teaser-title">
+      <div class="slop-teaser-head">
+        <h2 id="slop-teaser-title" class="slop-teaser-title">Desloppification</h2>
+        <p class="slop-teaser-body">
+          ZarishNoksha strips the AI slop tells and bad defaults out of every design discipline, from type to motion to copy. A skill can't make the model a better designer; it can clear the reflexes that make its output look generated.
+        </p>
+        <div class="slop-teaser-actions">
+          <a class="slop-teaser-cta-primary" href="/slop">
+            Browse the full catalog
+            <svg viewBox="0 0 16 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true">
+              <path d="M0 4h14M10 0l4 4-4 4"/>
+            </svg>
+          </a>
+          <code class="slop-teaser-cli">npx zarishnoksha detect src/</code>
+        </div>
+      </div>
+
+      <div class="foundation-grid" data-source="slop" data-reveal>
+        <!-- 7 discipline cards, rendered by JS with slop-tells-we-prevent copy -->
+      </div>
+
+    </section>
+
+    <script is:inline>
+      (function () {
+        const gallery = document.querySelector('[data-slop-gallery]');
+        if (!gallery) return;
+        const track = gallery.querySelector('[data-slop-track]');
+        const prev = gallery.querySelector('[data-slop-prev]');
+        const next = gallery.querySelector('[data-slop-next]');
+        const scrollByCards = (dir) => {
+          const card = track.querySelector('.slop-teaser-card');
+          if (!card) return;
+          const cardWidth = card.getBoundingClientRect().width + 18;
+          track.scrollBy({ left: dir * cardWidth * 2, behavior: 'smooth' });
+        };
+        prev?.addEventListener('click', () => scrollByCards(-1));
+        next?.addEventListener('click', () => scrollByCards(1));
+      })();
+    </script>
+
+    <!-- (The standalone "Design in production" section was removed. Its
+         narrative now lives in the bento (T7 + T8 below) plus the full
+         /live-mode page; the homepage hero's auto-playing demo is the
+         in-place proof.) -->
+
+    <!-- 02. THE LANGUAGE - Commands vocabulary + demos -->
+    <section class="language-section" id="language">
+      <div id="solution" style="height:0;overflow:hidden;visibility:hidden"></div>
+      <div class="section-header" data-reveal>
+        <h2 class="section-title">The Language</h2>
+      </div>
+      <div class="language-content">
+        <div class="language-intro-row" data-reveal>
+          <p class="section-lead">23 commands give you a shared design vocabulary with your AI. Each maps to one discipline (<code>/typeset</code> for type, <code>/colorize</code> for color, <code>/animate</code> for motion), so you can ask for the exact thing without explaining it. Pick any to see it in action, or <a href="/docs" class="cheatsheet-link">browse the full reference &rarr;</a></p>
+          <div class="language-view-toggle" role="tablist" aria-label="Commands view">
+            <button type="button" role="tab" class="language-view-tab is-active" data-view="palette" aria-selected="true">Palette</button>
+            <button type="button" role="tab" class="language-view-tab" data-view="periodic" aria-selected="false">Periodic</button>
+          </div>
+        </div>
+
+        <div id="commands-section" style="height:0;overflow:hidden;visibility:hidden"></div>
+
+        <div class="language-view language-view--palette is-active" data-view-panel="palette">
+          <div class="commands-subsection">
+            <div class="commands-gallery">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="language-view language-view--periodic" data-view-panel="periodic" hidden>
+          <div class="solution-visual-interactive" id="framework-viz-container" data-reveal>
+          <!-- Periodic table generated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 05. READY TO DROP IN: bento grid with six tiles. Replaces the
+         carousel (initWhyTabs in app.js returns early when .why-layout is
+         missing, so leaving that JS in place is harmless). Tiles share
+         inner content classes (.why-panel-title, .why-panel-body,
+         .why-visual--*) with the old carousel; only the outer chrome
+         changed. -->
+    <section class="why-section" id="why">
+      <div class="why-content" data-reveal>
+        <div class="section-header">
+          <h2 class="section-title">Ready to drop in</h2>
+        </div>
+
+        <div class="ks-bento why-bento">
+          <!-- T1: hero, wide. Respects your design system. -->
+          <article class="ks-bento-tile ks-bento-tile--span-8" id="why-respects">
+            <span class="ks-bento-num" data-color="kinpaku">01</span>
+            <h3 class="why-panel-title">Respects your design system.</h3>
+            <p class="why-panel-body">Inherits your tokens, components, and conventions instead of overwriting them. New work fits the system, not the model's defaults.</p>
+            <div class="why-visual why-visual--terminal">
+                <div class="why-terminal">
+                  <div class="why-terminal-header">
+                    <span class="why-terminal-dot"></span>
+                    <span class="why-terminal-dot"></span>
+                    <span class="why-terminal-dot"></span>
+                    <span class="why-terminal-title">/zarishnoksha polish : scanning codebase</span>
+                  </div>
+                  <div class="why-terminal-body">
+                    <div class="why-terminal-line why-terminal-line--prompt"><span class="why-terminal-prompt">&rsaquo;</span> Walking src/…</div>
+                    <div class="why-terminal-line">  <span class="why-terminal-ok">&check;</span> <span class="why-terminal-path">src/styles/tokens.css</span> &nbsp;<span class="why-terminal-meta">14 colors, 6 font sizes, 7 spacing steps</span></div>
+                    <div class="why-terminal-line">  <span class="why-terminal-ok">&check;</span> <span class="why-terminal-path">tailwind.config.ts</span> &nbsp;<span class="why-terminal-meta">theme.extend merged</span></div>
+                    <div class="why-terminal-line">  <span class="why-terminal-ok">&check;</span> <span class="why-terminal-path">src/components/</span> &nbsp;<span class="why-terminal-meta">34 components</span></div>
+                    <div class="why-terminal-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="why-terminal-meta">&middot; Button: primary, secondary, ghost, destructive</span></div>
+                    <div class="why-terminal-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="why-terminal-meta">&middot; Card: 3 variants, 8px / 16px radii</span></div>
+                    <div class="why-terminal-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="why-terminal-meta">&middot; Input, Select, Dialog, Toast, Table&hellip;</span></div>
+                    <div class="why-terminal-line">  <span class="why-terminal-ok">&check;</span> <span class="why-terminal-path">DESIGN.md</span> &nbsp;<span class="why-terminal-meta">brand rules loaded</span></div>
+                    <div class="why-terminal-line why-terminal-line--hint"><span class="why-terminal-arrow">&rarr;</span> Matching your system. Not inventing one.</div>
+                  </div>
+                </div>
+              </div>
+          </article>
+
+          <!-- T2: narrow. Real product context. -->
+          <article class="ks-bento-tile ks-bento-tile--span-4" id="why-product">
+            <span class="ks-bento-num" data-color="patina">02</span>
+            <h3 class="why-panel-title">Real product context.</h3>
+            <p class="why-panel-body">Captures the brief once, in <code>PRODUCT.md</code>. Every command reads it before designing.</p>
+              <div class="why-visual why-visual--productmd">
+                <div class="why-productmd-file">
+                  <div class="why-productmd-header">
+                    <span class="why-productmd-filename">PRODUCT.md</span>
+                    <span class="why-productmd-status">Loaded on every command</span>
+                  </div>
+                  <div class="why-productmd-body">
+                    <div class="why-productmd-field">
+                      <span class="why-productmd-k">Users</span>
+                      <span class="why-productmd-v">SREs on call, reading fast, often in the dark.</span>
+                    </div>
+                    <div class="why-productmd-field">
+                      <span class="why-productmd-k">Register</span>
+                      <span class="why-productmd-v">Product. Design serves the task.</span>
+                    </div>
+                    <div class="why-productmd-field">
+                      <span class="why-productmd-k">Brand voice</span>
+                      <span class="why-productmd-v">Calm, clinical, no hype.</span>
+                    </div>
+                    <div class="why-productmd-field">
+                      <span class="why-productmd-k">Anti-references</span>
+                      <span class="why-productmd-v">Purple gradients. Glassmorphism. "Boost your productivity."</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </article>
+
+          <!-- T3: narrow. DESIGN.md travels. Restored from the parked panel
+               at site/_parked/the-case.astro. -->
+          <article class="ks-bento-tile ks-bento-tile--span-4" id="why-designmd">
+            <span class="ks-bento-num" data-color="kinpaku">03</span>
+            <h3 class="why-panel-title">Travels as DESIGN.md.</h3>
+            <p class="why-panel-body"><code>/zarishnoksha document</code> writes one in the <a href="https://stitch.withgoogle.com/docs/design-md/overview/" target="_blank" rel="noopener">Google Stitch format</a>. Your visual system becomes portable.</p>
+            <div class="why-visual why-visual--designmd-v2">
+              <div class="why-dm-header">
+                <span class="why-dm-filename">DESIGN.md</span>
+                <span class="why-dm-badge">Google Stitch spec</span>
+              </div>
+              <div class="why-dm-grid">
+                <div class="why-dm-tile why-dm-tile--color" style="--c: var(--ks-kinpaku);">
+                  <div class="why-dm-tile-meta"><span>Primary</span><span>oklch(78% .12 82)</span></div>
+                  <div class="why-dm-color-hero"></div>
+                  <div class="why-dm-color-ramp">
+                    <span style="background: oklch(22% .04 78)"></span>
+                    <span style="background: oklch(34% .06 78)"></span>
+                    <span style="background: oklch(48% .08 78)"></span>
+                    <span style="background: oklch(61% .085 78)"></span>
+                    <span style="background: oklch(72% .105 82)"></span>
+                    <span style="background: oklch(78% .12 82)"></span>
+                    <span style="background: oklch(84% .075 84)"></span>
+                    <span style="background: oklch(89% .055 84)"></span>
+                  </div>
+                </div>
+                <div class="why-dm-tile why-dm-tile--type">
+                  <div class="why-dm-tile-meta"><span>Wordmark</span><span>Spaced 400</span></div>
+                  <div class="why-dm-type-specimen">IM</div>
+                  <div class="why-dm-type-family">Avenir Next</div>
+                </div>
+                <div class="why-dm-tile why-dm-tile--type">
+                  <div class="why-dm-tile-meta"><span>Body</span><span>Regular 400</span></div>
+                  <div class="why-dm-type-specimen why-dm-type-specimen--sans">Aa</div>
+                  <div class="why-dm-type-family">Avenir Next</div>
+                </div>
+                <div class="why-dm-tile why-dm-tile--components">
+                  <div class="why-dm-tile-meta"><span>Components</span><span>34</span></div>
+                  <div class="why-dm-comp-row">
+                    <span class="why-dm-comp-chip why-dm-comp-chip--primary">Primary</span>
+                    <span class="why-dm-comp-chip">Ghost</span>
+                  </div>
+                  <div class="why-dm-comp-input">Email address</div>
+                </div>
+              </div>
+              <div class="why-dm-foot">Readable by every DESIGN.md-aware tool.</div>
+            </div>
+          </article>
+
+          <!-- T4: wide. Tuned to the agent you use. -->
+          <article class="ks-bento-tile ks-bento-tile--span-8 why-panel--vizfirst" id="why-tuned">
+            <span class="ks-bento-num" data-color="patina">04</span>
+            <h3 class="why-panel-title">Tuned to the agent you actually use.</h3>
+            <p class="why-panel-body">Plays to each agent's strengths and around its weaknesses. Below: Codex used image generation to draft Neo Mirai before <code>/zarishnoksha craft</code> turned it into shipped code.</p>
+              <div class="why-visual why-visual--vizfirst">
+                <figure class="why-vz-plate why-vz-plate--hifi">
+                  <span class="why-vz-plate-kind">01 &middot; Visualize</span>
+                  <a class="why-vz-plate-frame" href="/cases/neo-mirai" aria-label="Read the Neo Mirai case study">
+                    <img src="assets/openai_image_2_hifi.jpg" alt="Auto-generated hi-fi landing-page mock in editorial warm-paper style." loading="lazy" width="864" height="1821" />
+                  </a>
+                </figure>
+                <figure class="why-vz-plate why-vz-plate--brand">
+                  <span class="why-vz-plate-kind">02 &middot; Shape</span>
+                  <a class="why-vz-plate-frame" href="/cases/neo-mirai" aria-label="Read the Neo Mirai case study">
+                    <img src="assets/openai_image_2_brand.jpg" alt="Auto-generated brand toolkit: identity lockups, palette, type, icon system, and application mocks for a fictional AI design conference." loading="lazy" width="1536" height="1024" />
+                  </a>
+                </figure>
+                <figure class="why-vz-plate why-vz-plate--live">
+                  <span class="why-vz-plate-kind">03 &middot; Live build</span>
+                  <a class="why-vz-plate-frame" href="/neo-mirai/" aria-label="Open the Neo Mirai live build">
+                    <img src="assets/cases/neo-mirai/live-fold.png" alt="Finished Neo Mirai website hero and agenda, implemented from the generated conference mock." loading="lazy" width="1440" height="1100" />
+                  </a>
+                </figure>
+              </div>
+              <p class="why-panel-meta"><a href="/cases/neo-mirai">Read the case &rarr;</a> &nbsp;&middot;&nbsp; <a href="/neo-mirai/">Open the live build &rarr;</a></p>
+          </article>
+
+          <!-- T5: medium. Brand vs Product registers. -->
+          <article class="ks-bento-tile ks-bento-tile--span-6" id="why-registers">
+            <span class="ks-bento-num" data-color="kinpaku">05</span>
+            <h3 class="why-panel-title">Brand work is not product UI.</h3>
+            <p class="why-panel-body">A landing page and a dashboard play by different rules. ZarishNoksha runs in two registers, <em>brand</em> or <em>product</em>, and every command knows which.</p>
+              <div class="why-visual why-visual--registers">
+                <div class="why-register why-register--brand">
+                  <span class="why-register-label">Brand mode</span>
+                  <div class="why-register-mock why-register-mock--brand">
+                    <span class="why-brand-hero-mono">Issue 04</span>
+                    <div class="why-brand-hero-title"><em>Shape</em> the story.</div>
+                  </div>
+                </div>
+                <div class="why-register why-register--product">
+                  <span class="why-register-label">Product mode</span>
+                  <div class="why-register-mock why-register-mock--product">
+                    <div class="why-product-row"><span class="why-product-k">Users</span><span class="why-product-v">12,482</span></div>
+                    <div class="why-product-row"><span class="why-product-k">Active now</span><span class="why-product-v">1,207</span></div>
+                    <div class="why-product-row"><span class="why-product-k">Conversion</span><span class="why-product-v">4.8%</span></div>
+                  </div>
+                </div>
+              </div>
+          </article>
+
+          <!-- T6: medium. CI/CD-ready. -->
+          <article class="ks-bento-tile ks-bento-tile--span-6" id="why-ci">
+            <span class="ks-bento-num" data-color="patina">06</span>
+            <h3 class="why-panel-title">Block slop before it ships.</h3>
+            <p class="why-panel-body">A detector you can wire into PR checks. 44 deterministic rules, no LLM, exit codes the build can read.</p>
+              <div class="why-visual why-visual--ci">
+                <div class="why-ci-window">
+                  <div class="why-ci-header">
+                    <span class="why-ci-branch">feat/pricing-page</span>
+                    <span class="why-ci-status why-ci-status--fail">&#x2717; failing</span>
+                  </div>
+                  <div class="why-ci-body">
+                    <div class="why-ci-line"><span class="why-ci-cmd">$</span> npx zarishnoksha detect src/</div>
+                    <div class="why-ci-issue"><span class="why-ci-x">&#x2717;</span> <code>src/Hero.tsx:42</code> gradient-text</div>
+                    <div class="why-ci-issue"><span class="why-ci-x">&#x2717;</span> <code>src/Card.tsx:8</code> side-stripe-border</div>
+                    <div class="why-ci-issue"><span class="why-ci-x">&#x2717;</span> <code>src/Button.tsx:17</code> ai-color-palette</div>
+                    <div class="why-ci-summary">3 anti-patterns &middot; exit 1</div>
+                  </div>
+                </div>
+              </div>
+          </article>
+
+          <!-- T7: wide. Live Mode showcase. The old standalone "Design in
+               production" section collapsed into this bento beat. -->
+          <article class="ks-bento-tile ks-bento-tile--span-8" id="why-live">
+            <span class="ks-bento-num" data-color="kinpaku">07</span>
+            <h3 class="why-panel-title">Iterate in your live app. <span class="why-panel-badge">BETA</span></h3>
+            <p class="why-panel-body">Pick any element in your running dev server, leave a comment or a stroke, hit Go. Three production-quality variants swap in via your framework's HMR.</p>
+            <div class="why-visual why-visual--live">
+              <div class="why-live-frame">
+                <div class="why-live-chrome">
+                  <span class="why-live-dot"></span><span class="why-live-dot"></span><span class="why-live-dot"></span>
+                  <span class="why-live-url">localhost:3000</span>
+                </div>
+                <div class="why-live-stage">
+                  <div class="why-live-pick">
+                    <span class="why-live-pick-tag">section.hero</span>
+                    <span class="why-live-pick-note">more elegant<span class="why-live-pick-caret"></span></span>
+                  </div>
+                </div>
+                <div class="why-live-ctx live-demo-ctx" data-phase="configuring">
+                  <div class="live-demo-ctx-row live-demo-ctx-row--configure">
+                    <div class="live-demo-ctx-command">
+                      <span class="live-demo-ctx-input"><span class="live-demo-ctx-selection">h1</span><span class="live-demo-ctx-caret"></span></span>
+                    </div>
+                    <div class="live-demo-ctx-trailing">
+                      <div class="live-demo-ctx-modifiers">
+                        <span class="live-demo-ctx-action">bolder<span class="live-demo-ctx-action-caret" aria-hidden="true">&#x25BE;</span></span>
+                        <span class="live-demo-ctx-count">&times;3</span>
+                      </div>
+                      <div class="live-demo-ctx-actions">
+                      <span class="live-demo-ctx-voice" aria-hidden="true">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
+                      </span>
+                      <span class="live-demo-ctx-go" aria-hidden="true">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                      </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="why-panel-meta"><a href="/live-mode">See how Live Mode works &rarr;</a></p>
+          </article>
+
+          <!-- T8: narrow. Accept writes to source. Pairs with T7 as the
+               "writes back" beat that separates Live Mode from a mock. -->
+          <article class="ks-bento-tile ks-bento-tile--span-4" id="why-writes">
+            <span class="ks-bento-num" data-color="patina">08</span>
+            <h3 class="why-panel-title">Accept writes to source.</h3>
+            <p class="why-panel-body">Variants land in your real file as an ordinary edit, not a throwaway mock. A diff you can review, commit, or undo.</p>
+            <div class="why-visual why-visual--writes">
+              <div class="why-writes-card">
+                <div class="why-writes-head">
+                  <span class="why-writes-check">&check;</span>
+                  <span class="why-writes-label">Wrote</span>
+                  <span class="why-writes-file">src/Hero.astro</span>
+                </div>
+                <div class="why-writes-diff">
+                  <div class="why-writes-line why-writes-line--del">- "Welcome to Our Hotel"</div>
+                  <div class="why-writes-line why-writes-line--add">+ "Where the coast forgets time"</div>
+                  <div class="why-writes-line why-writes-line--del">- "Book Now"</div>
+                  <div class="why-writes-line why-writes-line--add">+ "Reserve your stay"</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 06. GET STARTED -->
+    <section class="downloads-rebuild" id="downloads" aria-labelledby="downloads-title">
+      <div class="downloads-rebuild-card">
+      <div class="downloads-rebuild-head">
+        <h2 id="downloads-title" class="downloads-rebuild-title">Get started</h2>
+      </div>
+
+      <div class="downloads-rebuild-install" data-install-tabs>
+        <div class="downloads-rebuild-cmd-group">
+          <div class="downloads-rebuild-tabs" role="tablist" aria-label="Install method">
+            <span class="downloads-rebuild-tabs-label">Install via</span>
+            <button class="downloads-rebuild-tab" type="button" role="tab" id="install-tab-zarishnoksha" aria-controls="install-panel-zarishnoksha update-panel-zarishnoksha" aria-selected="true" data-method="zarishnoksha" title="Recommended">zarishnoksha<svg class="downloads-rebuild-tab-rec" width="11" height="11" viewBox="0 0 24 24" role="img" aria-label="Recommended"><title>Recommended</title><path d="M12 .587l3.668 7.431 8.2 1.193-5.934 5.787 1.401 8.169L12 18.896l-7.335 3.871 1.401-8.169L.132 9.211l8.2-1.193z"/></svg></button>
+            <button class="downloads-rebuild-tab" type="button" role="tab" id="install-tab-marketplace" aria-controls="install-panel-marketplace update-panel-marketplace" aria-selected="false" tabindex="-1" data-method="marketplace"><img class="downloads-rebuild-tab-logo" src="assets/claude-mark.png" alt="" width="13" height="13" loading="lazy" aria-hidden="true">marketplace</button>            <button class="downloads-rebuild-tab" type="button" role="tab" id="install-tab-skills" aria-controls="install-panel-skills update-panel-skills" aria-selected="false" tabindex="-1" data-method="skills">skills.sh</button>
+          </div>
+
+          <p class="downloads-rebuild-copilot-note">
+            <svg class="downloads-rebuild-copilot-note-logo" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.922 16.992c-.861 1.495-5.859 5.023-11.922 5.023-6.063 0-11.061-3.528-11.922-5.023A.641.641 0 0 1 0 16.736v-2.869a.841.841 0 0 1 .053-.22c.372-.935 1.347-2.292 2.605-2.656.167-.429.414-1.055.644-1.517a10.195 10.195 0 0 1-.052-1.086c0-1.331.282-2.499 1.132-3.368.397-.406.89-.717 1.474-.952 1.399-1.136 3.392-2.093 6.122-2.093 2.731 0 4.767.957 6.166 2.093.584.235 1.077.546 1.474.952.85.869 1.132 2.037 1.132 3.368 0 .368-.014.733-.052 1.086.23.462.477 1.088.644 1.517 1.258.364 2.233 1.721 2.605 2.656a.832.832 0 0 1 .053.22v2.869a.641.641 0 0 1-.078.256ZM12.172 11h-.344a4.323 4.323 0 0 1-.355.508C10.703 12.455 9.555 13 7.965 13c-1.725 0-2.989-.359-3.782-1.259a2.005 2.005 0 0 1-.085-.104L4 11.741v6.585c1.435.779 4.514 2.179 8 2.179 3.486 0 6.565-1.4 8-2.179v-6.585l-.098-.104s-.033.045-.085.104c-.793.9-2.057 1.259-3.782 1.259-1.59 0-2.738-.545-3.508-1.492a4.323 4.323 0 0 1-.355-.508h-.016.016Zm.641-2.935c.136 1.057.403 1.913.878 2.497.442.544 1.134.938 2.344.938 1.573 0 2.292-.337 2.657-.751.384-.435.558-1.15.558-2.361 0-1.14-.243-1.847-.705-2.319-.477-.488-1.319-.862-2.824-1.025-1.487-.161-2.192.138-2.533.529-.269.307-.437.808-.438 1.578v.021c0 .265.021.562.063.893Zm-1.626 0c.042-.331.063-.628.063-.894v-.02c-.001-.77-.169-1.271-.438-1.578-.341-.391-1.046-.69-2.533-.529-1.505.163-2.347.537-2.824 1.025-.462.472-.705 1.179-.705 2.319 0 1.211.175 1.926.558 2.361.365.414 1.084.751 2.657.751 1.21 0 1.902-.394 2.344-.938.475-.584.742-1.44.878-2.497Z"/><path d="M14.5 14.25a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1Zm-5 0a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1Z"/></svg>
+            <span>On the GitHub Copilot app? ZarishNoksha is <strong>built in</strong>. Skip the install and enable it under <strong>Settings → Experimental</strong>.</span>
+          </p>
+
+          <div class="downloads-rebuild-method-panel" id="install-panel-zarishnoksha" role="tabpanel" aria-labelledby="install-tab-zarishnoksha" data-method-panel="zarishnoksha">
+            <div class="downloads-rebuild-cmd">
+              <span class="downloads-rebuild-prompt" aria-hidden="true">$</span>
+              <code>npx zarishnoksha install</code>
+              <button class="downloads-rebuild-copy" type="button" aria-label="Copy install command" data-copy="npx zarishnoksha install">
+                <svg class="downloads-rebuild-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2"/>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                </svg>
+                <svg class="downloads-rebuild-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+            <p class="downloads-rebuild-method-note">Installs the build tailored to your harness and model. Requires <strong title="On older Node, npx resolves an outdated release that fails to install.">Node 24+</strong>.</p>
+
+            <details class="downloads-rebuild-branch">
+              <summary class="downloads-rebuild-branch-summary">
+                <svg class="downloads-rebuild-branch-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+                <span>Why one command, many builds</span>
+              </summary>
+              <div class="downloads-rebuild-branch-body">
+                <svg class="downloads-rebuild-branch-diagram" viewBox="0 0 430 210" role="img" aria-label="The ZarishNoksha source branches into a build tailored per harness. The Gemini and Codex builds carry extra model-specific slop rules that ban that model's known tells; every build also gets its native hook wiring and subagent where supported.">
+                  <path class="downloads-rebuild-branch-line" d="M104 105 C150 105 150 36 186 36"/>
+                  <path class="downloads-rebuild-branch-line" d="M104 105 C150 105 150 82 186 82"/>
+                  <path class="downloads-rebuild-branch-line" d="M104 105 C150 105 150 128 186 128"/>
+                  <path class="downloads-rebuild-branch-line" d="M104 105 C150 105 150 174 186 174"/>
+
+                  <rect class="downloads-rebuild-branch-root-box" x="6" y="83" width="96" height="44" rx="3"/>
+                  <text class="downloads-rebuild-branch-root-text" x="54" y="109" text-anchor="middle">zarishnoksha</text>
+
+                  <g class="downloads-rebuild-branch-target">
+                    <circle class="downloads-rebuild-branch-dot" cx="188" cy="36" r="3"/>
+                    <text class="downloads-rebuild-branch-name" x="200" y="33">Claude Code</text>
+                    <text class="downloads-rebuild-branch-tags" x="200" y="46">hooks + subagent</text>
+                  </g>
+                  <g class="downloads-rebuild-branch-target">
+                    <circle class="downloads-rebuild-branch-dot" cx="188" cy="82" r="3"/>
+                    <text class="downloads-rebuild-branch-name" x="200" y="79">Cursor</text>
+                    <text class="downloads-rebuild-branch-tags" x="200" y="92">pre-edit hook</text>
+                  </g>
+                  <g class="downloads-rebuild-branch-target">
+                    <circle class="downloads-rebuild-branch-dot" cx="188" cy="128" r="3"/>
+                    <text class="downloads-rebuild-branch-name" x="200" y="125">Gemini CLI</text>
+                    <text class="downloads-rebuild-branch-tags downloads-rebuild-branch-tags--slop" x="200" y="138">+ Gemini-tuned slop rules</text>
+                  </g>
+                  <g class="downloads-rebuild-branch-target">
+                    <circle class="downloads-rebuild-branch-dot" cx="188" cy="174" r="3"/>
+                    <text class="downloads-rebuild-branch-name" x="200" y="171">Codex CLI</text>
+                    <text class="downloads-rebuild-branch-tags downloads-rebuild-branch-tags--slop" x="200" y="184">+ Codex-tuned slop rules</text>
+                  </g>
+                </svg>
+                <p class="downloads-rebuild-branch-caption">Same skill, recompiled per target. The part that matters: builds for models with known tells carry extra slop rules banning that model's habits. The Gemini build kills its image-on-hover motion; the Codex build refuses ghost-cards and over-rounding. Native hook wiring and a subagent ship too, where the tool supports them.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="downloads-rebuild-method-panel" id="install-panel-marketplace" role="tabpanel" aria-labelledby="install-tab-marketplace" data-method-panel="marketplace" hidden>
+            <div class="downloads-rebuild-cmd">
+              <span class="downloads-rebuild-prompt" aria-hidden="true">$</span>
+              <code>/plugin marketplace add arwazarish/zarishnoksha</code>
+              <button class="downloads-rebuild-copy" type="button" aria-label="Copy Claude Code plugin command" data-copy="/plugin marketplace add arwazarish/zarishnoksha">
+                <svg class="downloads-rebuild-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2"/>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                </svg>
+                <svg class="downloads-rebuild-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+            <p class="downloads-rebuild-method-note">Claude Code only. After adding the marketplace, open <code>/plugin</code> and install ZarishNoksha from the list.</p>
+          </div>
+
+          <div class="downloads-rebuild-method-panel" id="install-panel-skills" role="tabpanel" aria-labelledby="install-tab-skills" data-method-panel="skills" hidden>
+            <div class="downloads-rebuild-cmd">
+              <span class="downloads-rebuild-prompt" aria-hidden="true">$</span>
+              <code>npx skills add arwazarish/zarishnoksha</code>
+              <button class="downloads-rebuild-copy" type="button" aria-label="Copy npx skills command" data-copy="npx skills add arwazarish/zarishnoksha">
+                <svg class="downloads-rebuild-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2"/>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                </svg>
+                <svg class="downloads-rebuild-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+            <p class="downloads-rebuild-method-note">The general-purpose skills installer. It installs one shared build for every harness rather than the one compiled for yours, so you give up the provider-native command files and paths tuned to your tool. Functionally complete, just not tailored.</p>
+          </div>
+        </div>
+
+        <div class="downloads-rebuild-cmd-group">
+          <span class="downloads-rebuild-cmd-label">First run</span>
+          <div class="downloads-rebuild-cmd">
+            <span class="downloads-rebuild-prompt" aria-hidden="true">$</span>
+            <code>/zarishnoksha init</code>
+            <button class="downloads-rebuild-copy" type="button" aria-label="Copy first run command" data-copy="/zarishnoksha init">
+              <svg class="downloads-rebuild-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2"/>
+                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+              </svg>
+              <svg class="downloads-rebuild-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 6 9 17l-5-5"/>
+              </svg>
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="downloads-rebuild-cmd-group">
+          <span class="downloads-rebuild-cmd-label downloads-rebuild-cmd-label--update">Update</span>
+
+          <div class="downloads-rebuild-method-panel" id="update-panel-zarishnoksha" role="tabpanel" aria-labelledby="install-tab-zarishnoksha" data-method-panel="zarishnoksha">
+            <div class="downloads-rebuild-cmd downloads-rebuild-cmd--update">
+              <span class="downloads-rebuild-prompt" aria-hidden="true">$</span>
+              <code>npx zarishnoksha update</code>
+              <button class="downloads-rebuild-copy" type="button" aria-label="Copy update command" data-copy="npx zarishnoksha update">
+                <svg class="downloads-rebuild-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2"/>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                </svg>
+                <svg class="downloads-rebuild-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="downloads-rebuild-method-panel" id="update-panel-marketplace" role="tabpanel" aria-labelledby="install-tab-marketplace" data-method-panel="marketplace" hidden>
+            <p class="downloads-rebuild-update-menu">Update from the <code>/plugin</code> menu inside Claude Code.</p>
+          </div>
+
+          <div class="downloads-rebuild-method-panel" id="update-panel-skills" role="tabpanel" aria-labelledby="install-tab-skills" data-method-panel="skills" hidden>
+            <div class="downloads-rebuild-cmd downloads-rebuild-cmd--update">
+              <span class="downloads-rebuild-prompt" aria-hidden="true">$</span>
+              <code>npx skills update</code>
+              <button class="downloads-rebuild-copy" type="button" aria-label="Copy npx skills update command" data-copy="npx skills update">
+                <svg class="downloads-rebuild-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2"/>
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                </svg>
+                <svg class="downloads-rebuild-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5"/>
+                </svg>
+                <span>Copy</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <p class="downloads-rebuild-note">Works with Cursor, Claude Code, GitHub Copilot, Gemini CLI, Codex CLI, and every other major AI coding harness.</p>
+
+        <p class="downloads-rebuild-secondary"><a href="/tutorials/getting-started">Read the setup guide</a> &middot; <a href="/changelog">See what's new</a> &middot; <a href="/faq">Got questions?</a></p>
+      </div>
+
+
+      <ul class="downloads-rebuild-extras">
+        <li>
+          <strong>Chrome extension</strong>
+          <span>Run the detector overlay on any page: your staging, a competitor, anything in the browser.</span>
+          <a href="https://chromewebstore.google.com/detail/zarishnoksha/bdkgmiklpdmaojlpflclinlofgjfpabf" target="_blank" rel="noopener">Install from the Chrome Web Store →</a>
+        </li>
+        <li>
+          <strong>CLI for CI</strong>
+          <span><code>npx zarishnoksha detect src/</code> in a PR check. 44 deterministic rules. JSON output, exit codes for build gates.</span>
+          <a href="https://www.npmjs.com/package/zarishnoksha" target="_blank" rel="noopener">View on npm →</a>
+        </li>
+        <li>
+          <strong>Follow along</strong>
+          <span>The design thinking behind new commands and anti-patterns, in long form. Read the newsletter, or catch the shorter notes on X.</span>
+          <a href="https://zarishnokshastyle.substack.com" target="_blank" rel="noopener" class="downloads-rebuild-link-primary">Read the newsletter →</a>
+          <a href="https://x.com/zarishnoksha_ai" target="_blank" rel="noopener" class="downloads-rebuild-link-secondary">Follow @zarishnoksha_ai on X →</a>
+        </li>
+      </ul>
+
+      <p class="downloads-rebuild-more">Learn more: <a href="/tutorials/getting-started">Getting started</a> &middot; <a href="/designing">Designing with ZarishNoksha</a> &middot; <a href="/docs">command docs</a></p>
+      </div>
+    </section>
+
+<Fragment slot="scripts">
+    <script is:inline>
+      (function () {
+        const root = document.querySelector('[data-install-tabs]');
+        if (!root) return;
+        const tabs = Array.from(root.querySelectorAll('[role="tab"][data-method]'));
+        const panels = Array.from(root.querySelectorAll('[data-method-panel]'));
+        function select(method, focus) {
+          tabs.forEach((tab) => {
+            const on = tab.dataset.method === method;
+            tab.setAttribute('aria-selected', String(on));
+            tab.tabIndex = on ? 0 : -1;
+            if (on && focus) tab.focus();
+          });
+          panels.forEach((panel) => {
+            panel.hidden = panel.dataset.methodPanel !== method;
+          });
+        }
+        tabs.forEach((tab, i) => {
+          tab.addEventListener('click', () => select(tab.dataset.method));
+          tab.addEventListener('keydown', (event) => {
+            if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+            event.preventDefault();
+            const step = event.key === 'ArrowRight' ? 1 : tabs.length - 1;
+            select(tabs[(i + step) % tabs.length].dataset.method, true);
+          });
+        });
+      })();
+    </script>
+
+  <script>
+    import '../scripts/app.js';
+  </script>
+</Fragment>
+
+</Base>
