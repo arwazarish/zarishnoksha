@@ -1,20 +1,27 @@
 {
   "name": "zarishnoksha",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
   "features": {
     "ghcr.io/devcontainers/features/node:2": { "version": "24" },
-    "ghcr.io/devcontainers/features/bun:1": { "version": "1" },
     "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
       "installOhMyZsh": true,
       "upgradePackages": true
     }
   },
-  "postCreateCommand": "bun install --frozen-lockfile && bunx puppeteer browsers install chrome && npx --yes playwright install --with-deps chromium",
-  "postStartCommand": "bun run build:browser",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postStartCommand": "bun run build:browser 2>/dev/null || true",
   "containerEnv": {
-    "CI": "true"
+    "CI": "true",
+    "EDITOR": "code --wait",
+    "GIT_EDITOR": "code --wait",
+    "BUN_INSTALL": "/home/vscode/.bun",
+    "PATH": "${containerEnv:BUN_INSTALL}/bin:${containerEnv:PATH}"
   },
   "customizations": {
     "vscode": {
@@ -23,20 +30,55 @@
         "astro-build.astro-vscode",
         "bradlc.vscode-tailwindcss",
         "editorconfig.editorconfig",
-        "ms-playwright.playwright"
+        "ms-playwright.playwright",
+        "eamodio.gitlens",
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "streetsidesoftware.code-spell-checker",
+        "christian-kohler.path-intellisense",
+        "usernamehw.errorlens",
+        "gruntfuggly.todo-tree",
+        "redhat.vscode-yaml",
+        "tamasfe.even-better-toml",
+        "mikestead.dotenv",
+        "ms-vscode.vscode-typescript-next",
+        "formulahendry.auto-rename-tag",
+        "formulahendry.auto-close-tag",
+        "naumovs.color-highlight",
+        "zignd.html-css-class-completion",
+        "nicholasaguiar.css-class-intellisense"
       ],
       "settings": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "biomejs.biome",
+        "editor.tabSize": 2,
+        "editor.minimap.enabled": false,
+        "editor.bracketPairColorization.enabled": true,
+        "editor.guides.bracketPairs": true,
+        "editor.wordWrap": "on",
         "[javascript]": { "editor.defaultFormatter": "biomejs.biome" },
         "[javascriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
         "[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
         "[typescriptreact]": { "editor.defaultFormatter": "biomejs.biome" },
         "[json]": { "editor.defaultFormatter": "biomejs.biome" },
+        "[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
         "[css]": { "editor.defaultFormatter": "biomejs.biome" },
-        "files.associations": {
-          "*.mjs": "javascript"
-        }
+        "files.associations": { "*.mjs": "javascript" },
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "gitlens.hovers.currentLine.over": "line",
+        "gitlens.codeLens.enabled": true,
+        "todo-tree.general.tags": ["BUG", "HACK", "FIXME", "TODO", "XXX", "NOTE", "TEMP"],
+        "todo-tree.highlights.defaultHighlight": {
+          "icon": "alert",
+          "type": "text",
+          "foreground": "#fff",
+          "background": "#e8a200",
+          "opacity": 50
+        },
+        "css.validate": false,
+        "scss.validate": false
       }
     }
   },
@@ -44,5 +86,6 @@
   "portsAttributes": {
     "4321": { "label": "Astro dev server", "onAutoForward": "openBrowser" }
   },
+  "mounts": ["source=${localWorkspaceFolder}/.devcontainer/bash-history,target=/home/vscode/commandhistory,type=bind"],
   "remoteUser": "vscode"
 }

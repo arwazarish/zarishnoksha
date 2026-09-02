@@ -4,6 +4,18 @@
     "astro-build.astro-vscode",
     "bradlc.vscode-tailwindcss",
     "editorconfig.editorconfig",
-    "ms-playwright.playwright"
+    "ms-playwright.playwright",
+    "eamodio.gitlens",
+    "github.vscode-github-actions",
+    "github.vscode-pull-request-github",
+    "streetsidesoftware.code-spell-checker",
+    "dbaeumer.vscode-eslint",
+    "usernamehw.errorlens",
+    "gruntfuggly.todo-tree",
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml",
+    "mikestead.dotenv",
+    "exiasr.hardhat-solidity",
+    "ms-vscode.vscode-typescript-next"
   ]
 }
