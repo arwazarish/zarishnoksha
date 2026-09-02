@@ -41,7 +41,10 @@ const VIEWBOX_H = 210;
 
 function glyphPathString(font, char, xOffset) {
   const glyph = font.glyphForCodePoint(char.codePointAt(0));
-  const scale = TEXT_SCALE;
+  // Paths are emitted in raw font units (1000-unit em). The enclosing <g>
+  // already applies the TEXT_SCALE transform, so the coordinates here must
+  // NOT be scaled again or the wordmark collapses to a sliver (double scale).
+  const scale = 1;
   const parts = [];
   for (const c of glyph.path.commands) {
     if (c.command === "moveTo" || c.command === "lineTo") {
