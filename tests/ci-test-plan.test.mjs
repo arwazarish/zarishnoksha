@@ -58,16 +58,16 @@ describe("ci-test-plan", () => {
     assert.equal(outputs.live, "false");
   });
 
-  it("forces deterministic suites on push without forcing opt-in E2E suites", () => {
+  it("routes push changes without forcing unrelated deterministic suites", () => {
     const outputs = runPlan({
       GITHUB_EVENT_NAME: "push",
       CI_CHANGED_FILES: "README.md",
     });
 
     assert.equal(outputs.core, "true");
-    assert.equal(outputs.detector, "true");
-    assert.equal(outputs.live, "true");
-    assert.equal(outputs.framework, "true");
+    assert.equal(outputs.detector, "false");
+    assert.equal(outputs.live, "false");
+    assert.equal(outputs.framework, "false");
     assert.equal(outputs.cli_remote_e2e, "false");
     assert.equal(outputs.live_e2e, "false");
     assert.equal(outputs.live_e2e_accept_cleanup, "false");

@@ -1,23 +1,33 @@
-name: Sync Generated Provider Output
+name: Verify Generated Provider Output
 
 on:
   push:
     branches: [main]
     paths:
       - ".claude-plugin/**"
-      - "cli/engine/**"
+      - "cli/**"
       - "skill/**"
       - "scripts/**"
       - "package.json"
       - "bun.lock"
+      - ".github/workflows/sync-generated-output.yml"
+  pull_request:
+    paths:
+      - ".claude-plugin/**"
+      - "cli/**"
+      - "skill/**"
+      - "scripts/**"
+      - "package.json"
+      - "bun.lock"
+      - ".github/workflows/sync-generated-output.yml"
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: sync-generated-output
-  cancel-in-progress: false
+  group: generated-output-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   GENERATED_PATHS: >-
@@ -34,19 +44,15 @@ env:
     .trae
     .trae-cn
     plugin
+    cli/engine/detect-antipatterns-browser.js
+    extension/detector
 
 jobs:
-  sync:
-    if: false # disabled — re-enable when ready for generated output sync
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-          # Optional PAT or GitHub App token. With the default GITHUB_TOKEN,
-          # GitHub suppresses follow-up workflow runs from the generated commit.
-          token: ${{ secrets.SYNC_GENERATED_OUTPUT_TOKEN || github.token }}
 
       - name: Setup Node
         uses: actions/setup-node@v7
@@ -61,38 +67,10 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Build release output
+      - name: Rebuild generated output
         run: bun run build:release
 
-      - name: Check generated output drift
-        id: drift
+      - name: Verify generated output is committed
         run: |
-          changes="$(git status --porcelain -- $GENERATED_PATHS)"
-          if [ -z "$changes" ]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "No generated provider output drift."
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            printf '%s\n' "$changes"
-          fi
-
-      - name: Commit generated output
-        if: steps.drift.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add $GENERATED_PATHS
-          git commit -m "Sync generated provider output"
-
-          git fetch origin main
-          if ! git merge-base --is-ancestor origin/main HEAD; then
-            echo "::error::main advanced while generated output was building; rerun this workflow on the latest main."
-            exit 1
-          fi
-
-          git push origin HEAD:main
-
-      - name: Summarize generated output commit
-        if: steps.drift.outputs.changed == 'true'
-        run: |
-          echo "Committed generated provider output directly to main." >> "$GITHUB_STEP_SUMMARY"
+          git diff --check
+          git diff --exit-code -- $GENERATED_PATHS

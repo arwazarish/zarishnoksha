@@ -6,7 +6,9 @@ import { DEFAULT_SUITES, matchesSuiteTriggers } from "./test-suites.mjs";
 const eventName = process.env.GITHUB_EVENT_NAME || "";
 const localNoChanges = !eventName && !process.env.CI_CHANGED_FILES;
 const changedFiles = localNoChanges ? [] : getChangedFiles();
-const forceDeterministic = localNoChanges || eventName === "push" || eventName === "workflow_dispatch";
+// Pushes and pull requests should run only suites affected by the change.
+// Manual dispatch remains the explicit full-sweep escape hatch.
+const forceDeterministic = localNoChanges || eventName === "workflow_dispatch";
 const forceOptIn = eventName === "workflow_dispatch";
 
 const plan = {
