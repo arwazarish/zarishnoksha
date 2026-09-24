@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -42,5 +44,5 @@ jobs:
       - name: Publish to npm (Trusted Publishing via OIDC)
         run: |
           bun run prepack
-          npm publish --provenance --access public
+          npm publish --access public
           bun run postpack
