@@ -109,7 +109,7 @@
     "opentype.js": "^2.0.0",
     "playwright": "^1.62.1",
     "sharp": "^0.35.4",
-    "wrangler": "^4.127.1",
+    "wrangler": "^4.141.0",
     "zod": "^4.5.4"
   }
 }
