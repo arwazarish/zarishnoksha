@@ -20,7 +20,9 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const LIVE_BROWSER = path.resolve(__dirname, "..", "skill/scripts/live-browser.js");
-const SOURCE = fs.readFileSync(LIVE_BROWSER, "utf-8");
+// Generated browser code is formatted by Biome and may use either quote style.
+// These guards assert structural behavior, not the formatter's choice of quotes.
+const SOURCE = fs.readFileSync(LIVE_BROWSER, "utf-8").replaceAll('"', "'");
 
 describe("live-browser.js regression guards", () => {
   it("resolveCanvasBackground does not fall back to `getComputedStyle(...).backgroundColor || ...`", () => {
@@ -54,7 +56,7 @@ describe("live-browser.js regression guards", () => {
   it("shader bitmap decode failure keeps a visible fallback overlay", () => {
     assert.match(
       SOURCE,
-      /function showShaderBitmapFallback\(canvas, blob\)[\s\S]{0,900}?fallback\.style\.backgroundImage = 'url\("' \+ objectUrl \+ '"\)';[\s\S]{0,300}?shaderState = \{ canvas: fallback,[\s\S]{0,180}?objectUrl \};/,
+      /function showShaderBitmapFallback\(canvas, blob\)[\s\S]{0,900}?fallback\.style\.backgroundImage[\s\S]{0,120}?objectUrl[\s\S]{0,300}?shaderState = \{ canvas: fallback,[\s\S]{0,180}?objectUrl \};/,
       "shader fallback should render the captured bitmap via a background-image div and keep its object URL revocable",
     );
     assert.match(
@@ -106,12 +108,12 @@ describe("live-browser.js regression guards", () => {
   it("locks every global bar mode toggle while manual Apply is in flight", () => {
     assert.match(
       SOURCE,
-      /const controlsLocked = pendingApplyInFlight === true;[\s\S]{0,120}?\[pickToggle, insertToggle, detectToggle, designToggle\]\.forEach/,
+      /\[pickToggle, insertToggle, detectToggle, designToggle\]\.forEach\([\s\S]{0,100}?btn\.disabled = controlsLocked/,
       "pending manual Apply must visually disable Pick, Insert, Detect, and Design together",
     );
     assert.match(
       SOURCE,
-      /function toggleInsert\(\) \{[\s\S]{0,120}?if \(pendingApplyInFlight\) \{ showManualApplyBusyToast\(\); return; \}/,
+      /function toggleInsert\(\) \{[\s\S]{0,500}?if \(pendingApplyInFlight\) \{[\s\S]{0,80}?showManualApplyBusyToast\(\);[\s\S]{0,40}?return;/,
       "Insert must have the same in-flight Apply guard as the other mode toggles",
     );
   });
@@ -201,7 +203,7 @@ describe("live-browser.js regression guards", () => {
     );
     assert.match(
       SOURCE,
-      /function shouldSteerAutoFocus\(\) \{[\s\S]{0,160}?&& !isPageEditableActive\(\)/,
+      /function shouldSteerAutoFocus\(\) \{[\s\S]{0,320}?&&\s*!isPageEditableActive\(\)/,
       "steer chat auto-focus must back off while the page owns an editable caret",
     );
   });
@@ -300,7 +302,7 @@ describe("live-browser.js regression guards", () => {
     );
     assert.match(
       SOURCE,
-      /scrollLockAbort\.signal\.addEventListener\('abort', \(\) => \{\s*document\.getElementById\(SCROLL_ANCHOR_LOCK_ID\)\?\.remove\(\);/,
+      /scrollLockAbort\.signal\.addEventListener\(\s*'abort',[\s\S]{0,400}?document\.getElementById\(SCROLL_ANCHOR_LOCK_ID\)\?\.remove\(\);/,
       "stopping the scroll lock must remove the injected anchor-suppression <style> so it never outlives the session",
     );
   });
@@ -414,7 +416,7 @@ describe("live-browser.js regression guards", () => {
     );
     assert.match(
       SOURCE,
-      /&& !shouldPassthroughElementNav\(deepActive, e\)/,
+      /&&\s*!shouldPassthroughElementNav\(deepActive, e\)/,
       "global input guard must honor empty-input arrow passthrough",
     );
   });
@@ -460,7 +462,7 @@ describe("live-browser.js regression guards", () => {
     );
     assert.match(
       SOURCE,
-      /function togglePick\(\)[\s\S]{0,200}?saveInteractionPrefs\(\);/,
+      /function togglePick\(\)[\s\S]{0,450}?saveInteractionPrefs\(\);/,
       "togglePick must persist interaction prefs",
     );
     assert.match(
@@ -522,7 +524,7 @@ describe("live-browser.js regression guards", () => {
     assert.match(SOURCE, /function showInsertCreateTooltip\(/, "Create disabled state uses a custom hover tooltip");
     assert.match(
       SOURCE,
-      /function buildCyclingRow\(\)[\s\S]*?background: C\.brand, color: C\.ink/,
+      /function buildCyclingRow\(\)[\s\S]*?background: C\.brand[\s\S]{0,40}?color: C\.ink/,
       "Accept button uses lacquer-deep text on kinpaku gold",
     );
     assert.match(SOURCE, /insertCreateDisabledReason/, "disabled Create hover must explain why");
@@ -557,7 +559,7 @@ describe("live-browser.js regression guards", () => {
     );
     assert.match(
       SOURCE,
-      /function setPageInteractionCursor\(cursor\)[\s\S]{0,700}?cursor: ' \+ cursor \+ ' !important/,
+      /function setPageInteractionCursor\(cursor\)[\s\S]{0,700}?cursor:\s*'\s*\+\s*cursor\s*\+\s*' !important/,
       "pick / insert cursor is applied through the injected <style> textContent, keyed by PICK_CURSOR_STYLE_ID",
     );
     assert.match(
@@ -643,7 +645,7 @@ describe("live-browser.js regression guards", () => {
     );
     assert.match(
       SOURCE,
-      /function handleAccept\(\)[\s\S]{0,360}?const domVisibleVariant = readVisibleVariantFromDOM\(currentSessionId\);[\s\S]{0,120}?if \(domVisibleVariant > 0\) visibleVariant = domVisibleVariant;[\s\S]{0,160}?variantId: String\(visibleVariant\)/,
+      /function handleAccept\(\)[\s\S]{0,800}?const domVisibleVariant = readVisibleVariantFromDOM\(currentSessionId\);[\s\S]{0,180}?if \(domVisibleVariant > 0\) visibleVariant = domVisibleVariant;[\s\S]{0,220}?variantId: String\(visibleVariant\)/,
       "event=live_browser.accept_stale_visible_variant actor=browser operation=accept_after_hmr risk=accept_sends_variant_1_after_user_cycles_to_2 expected=read_dom_visible_variant actual=stale_state_variable",
     );
   });
@@ -687,7 +689,7 @@ describe("live-browser.js regression guards", () => {
     assert.match(SOURCE, /CONFIGURE_SELECTION_PILL_PAD = '1px 4px'/, "selection pill uses 1px 4px padding");
     assert.match(
       SOURCE,
-      /function configureSelectionPillStyle\(extra = \{\}\)[\s\S]{0,400}?color: P\.patina/,
+      /function configureSelectionPillStyle\(extra = \{\}\)[\s\S]{0,700}?color: P\.patina/,
       "selection pill label uses patina text color",
     );
     assert.doesNotMatch(

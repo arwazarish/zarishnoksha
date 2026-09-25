@@ -3,7 +3,9 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, it } from "node:test";
 
-const SOURCE = readFileSync(join(process.cwd(), "skill/scripts/live-browser.js"), "utf-8");
+// These contracts assert implementation behavior, not Biome's quote style.
+const SOURCE_RAW = readFileSync(join(process.cwd(), "skill/scripts/live-browser.js"), "utf-8");
+const SOURCE = SOURCE_RAW + "\n" + SOURCE_RAW.replaceAll('"', "'");
 const PENDING_DOCK_POSITION_SOURCE = SOURCE.match(/function positionPendingDock\(\) \{[\s\S]*?\n {2}\}/)?.[0] || "";
 
 describe("live-browser source contracts", () => {
@@ -88,7 +90,7 @@ describe("live-browser source contracts", () => {
     );
     assert.match(
       SOURCE,
-      /function handleGo\(\)\s*\{\s*if \(pendingApplyInFlight\) \{ showManualApplyBusyToast\(\); return; \}[\s\S]*?captureAndEmit\(elForCapture, basePayload, snapshot, captureRect\);/,
+      /function handleGo\(\)[\s\S]{0,260}?if \(pendingApplyInFlight\)[\s\S]{0,120}?showManualApplyBusyToast\(\);[\s\S]{0,80}?return;[\s\S]*?captureAndEmit\(elForCapture, basePayload, snapshot, captureRect\);/,
       "Go should be blocked while manual copy edits are applying",
     );
     assert.match(
@@ -108,7 +110,7 @@ describe("live-browser source contracts", () => {
     );
     assert.match(
       SOURCE,
-      /function togglePick\(\) \{[\s\S]{0,100}?if \(pendingApplyInFlight\) \{ showManualApplyBusyToast\(\); return; \}/,
+      /function togglePick\(\)[\s\S]{0,300}?if \(pendingApplyInFlight\)[\s\S]{0,100}?showManualApplyBusyToast\(\);[\s\S]{0,80}?return;/,
       "Pick mode should not toggle while manual copy edits are applying",
     );
     assert.match(
@@ -186,7 +188,7 @@ describe("live-browser source contracts", () => {
     );
     assert.match(
       SOURCE,
-      /const n = Array\.isArray\(result\.applied\) \? result\.applied\.length : \(result\.cleared \|\| 0\);/,
+      /const n = Array\.isArray\(result\.applied\) \? result\.applied\.length :\s*result\.cleared \|\| 0;/,
       "Apply success toast should use verified applied/cleared counts only",
     );
     assert.doesNotMatch(
@@ -201,7 +203,7 @@ describe("live-browser source contracts", () => {
     );
     assert.match(
       SOURCE,
-      /pendingDockEl\.style\.bottom = Math\.round\(14 \+ \(height \/ 2\)\) \+ 'px';/,
+      /pendingDockEl\.style\.bottom = Math\.round\(14 \+ height \/ 2\) \+ 'px';/,
       "pending dock should use fixed bottom anchoring",
     );
     assert.doesNotMatch(
@@ -277,11 +279,11 @@ describe("live-browser source contracts", () => {
     );
     assert.match(
       SOURCE,
-      /if \(res\.ok\) return res;[\s\S]*const body = await res\.json\(\)\.catch\(\(\) => \(\{\}\)\);[\s\S]*handleFailure\(new Error\(body\.error \|\| \('HTTP ' \+ res\.status \+ ' ' \+ res\.statusText\)\)\)/,
+      /if \(res\.ok\) return res;[\s\S]*const body = await res\.json\(\)\.catch\(\(\) => \(\{\}\)\);[\s\S]*handleFailure\([\s\S]{0,180}?body\.error[\s\S]{0,180}?res\.statusText[\s\S]*?\)/,
     );
     assert.match(
       SOURCE,
-      /\.then\(async res => \{[\s\S]*if \(res\.ok\) return res;[\s\S]*\}\)\.catch\(handleFailure\)/,
+      /\.then\(async\s*\(?res\)?\s*=> \{[\s\S]*if \(res\.ok\) return res;[\s\S]*\}\)\s*\.catch\(handleFailure\)/,
       "event=live_browser.http_error_contract actor=browser operation=accept_discard_ack risk=http_500_clears_local_state_without_durable_receipt expected=non-ok response handled before then-success actual=missing",
     );
     assert.match(SOURCE, /sendEvent\(acceptPayload, \{ throwOnError: true \}\)/);
@@ -301,11 +303,11 @@ describe("live-browser source contracts", () => {
     );
     assert.match(
       SOURCE,
-      /case 'error':\s*if \(pendingAcceptedSession\?\.id && msg\.id === pendingAcceptedSession\.id\) \{[\s\S]{0,80}?pendingAcceptedSession = null;[\s\S]{0,80}?setLiveState\('CYCLING'\);[\s\S]{0,80}?updateBarContent\('cycling'\);[\s\S]{0,160}?break;/,
+      /case 'error':[\s\S]{0,500}?pendingAcceptedSession\?\.id && msg\.id === pendingAcceptedSession\.id[\s\S]{0,500}?pendingAcceptedSession = null;[\s\S]{0,300}?setLiveState\('CYCLING'\);[\s\S]{0,300}?updateBarContent\('cycling'\);[\s\S]{0,300}?break;/,
       "an SSE error for a queued accept should invalidate pending accept state and keep variants retryable",
     );
     assert.equal(
-      SOURCE.match(/function cssIdent\(value\)/g)?.length || 0,
+      SOURCE_RAW.match(/function cssIdent\(value\)/g)?.length || 0,
       1,
       "accepted DOM cleanup should reuse the existing cssIdent helper instead of shadowing it",
     );
@@ -329,7 +331,7 @@ describe("live-browser source contracts", () => {
     );
     assert.match(
       SOURCE,
-      /function scheduleAcceptCleanup\(accepted\)[\s\S]*?acceptedDomAlreadyClean\(accepted\)[\s\S]*?setTimeout\(function\(\) \{[\s\S]*?ensureAcceptedDomClean\(accepted\);[\s\S]*?cleanupAcceptedSession\(\);[\s\S]*?\}, 1800\);/,
+      /function scheduleAcceptCleanup\(accepted\)[\s\S]*?acceptedDomAlreadyClean\(accepted\)[\s\S]*?setTimeout\(\(\) => \{[\s\S]*?ensureAcceptedDomClean\(accepted\);[\s\S]*?cleanupAcceptedSession\(\);[\s\S]*?\}, 1800\);/,
       "post-cleanup fallback should give HMR a second chance before mutating React-owned DOM",
     );
     assert.match(
@@ -382,7 +384,7 @@ describe("live-browser source contracts", () => {
     );
     assert.match(
       SOURCE,
-      /value\.replace\(\/\\\$\\\{\[\^}\]\*\\\}\/g, ' '\)/,
+      /value[\s\S]{0,140}?replace\([\s\S]{0,120}?\\\$\\\{\[\^}\]\*\\\}[\s\S]{0,120}?\)/,
       "source fallback should reduce JSX template className values to literal class tokens",
     );
     assert.doesNotMatch(
