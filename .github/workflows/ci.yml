@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   changes:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       core: ${{ steps.plan.outputs.core }}
       detector: ${{ steps.plan.outputs.detector }}
@@ -45,7 +45,7 @@ jobs:
         run: node scripts/ci-test-plan.mjs
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: changes
     steps:
       - name: Checkout repository
@@ -118,7 +118,7 @@ jobs:
           retention-days: 7
 
   cli-remote-e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: changes
     if: needs.changes.outputs.cli_remote_e2e == 'true'
     steps:
@@ -143,7 +143,7 @@ jobs:
 
   live-e2e-smoke:
     name: live-e2e smoke (${{ matrix.group }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: changes
     if: needs.changes.outputs.live_e2e == 'true' && github.event_name != 'workflow_dispatch'
     timeout-minutes: 15
@@ -211,7 +211,7 @@ jobs:
 
   live-e2e-full:
     name: live-e2e full (${{ matrix.group }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: changes
     if: needs.changes.outputs.live_e2e == 'true' && github.event_name == 'workflow_dispatch'
     timeout-minutes: 25
@@ -283,7 +283,7 @@ jobs:
           if-no-files-found: ignore
 
   live-e2e-accept-cleanup:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: changes
     if: needs.changes.outputs.live_e2e_accept_cleanup == 'true'
     timeout-minutes: 15
@@ -348,7 +348,7 @@ jobs:
           bun run test:live-e2e-accept-cleanup
 
   live-svelte-adapter-deepseek:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: changes
     if: needs.changes.outputs.live_svelte_adapter_deepseek == 'true'
     timeout-minutes: 25
@@ -406,7 +406,7 @@ jobs:
         run: bun run test:live-svelte-adapter-deepseek
 
   skill-behavior:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: changes
     if: needs.changes.outputs.skill_behavior == 'true' && github.event_name != 'pull_request'
     env:
