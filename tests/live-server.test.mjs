@@ -9,6 +9,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { after, before, describe, it } from "node:test";
+import vm from "node:vm";
 import {
   getDesignSidecarPath,
   getLiveDir,
@@ -2806,6 +2807,9 @@ colors: {}
     const text = await res.text();
     // Sanity: the UMD build self-registers as window.modernScreenshot.
     assert.ok(text.includes("modernScreenshot"));
+    // Validate the exact payload delivered to browsers. A malformed minified
+    // regex can pass string-presence checks but fail only when Chromium loads it.
+    assert.doesNotThrow(() => new vm.Script(text, { filename: "modern-screenshot.umd.js" }));
   });
 
   it("POST /annotation rejects invalid token", async () => {
