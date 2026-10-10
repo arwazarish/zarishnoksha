@@ -34,7 +34,10 @@ const COMPONENTS = {
     manifest: "package.json",
     tagPrefix: "cli-v",
     label: "CLI",
-    changelogLabel: "CLI v",
+    // The initial release is documented as one shared suite entry rather than
+    // separate skill/CLI/extension entries. Later component releases can add
+    // their own labelled changelog headers.
+    changelogLabel: "v",
     buildCmd: null,
     artifacts: [],
     postReleaseHint: "Run `npm publish` next to push the package to the npm registry.",
